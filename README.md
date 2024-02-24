@@ -2,21 +2,25 @@
 
 A javascript svg gauge
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
+  <img alt="gauge with basic settings" height="150">  
+</picture>
+
 _"zero dependencies and scales nicely on touch devices"_
 
 demo here
 
-### Cookbook
+## Cookbook
 
-1. html
+### Basic
 
 ```html
 <div id="gaugeContainer">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
 </div>
 ```
-
-2. basic settings
 ```javascript
 
 const settings = {
@@ -67,9 +71,6 @@ const settings = {
     }
 };
 ```
-
-3. script
-
 ```javascript
 
 let gauge = new VGauge('gaugeContainer', settings);
@@ -77,10 +78,25 @@ let gauge = new VGauge('gaugeContainer', settings);
 gauge.value = 34.6;
 
 ```
+### Single Color
+
+
+
+### As intended
+
+
+### Add an icon
+
+
+
+
+
+result:
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
-  <img alt="Shows a gauge" height="600">  
+  <img alt="gauge with basic settings" height="200">  
 </picture>
 
 
@@ -90,7 +106,7 @@ gauge.value = 34.6;
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/names_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="images/gauge2_cc_black.svg">
-  <img alt="Shows a gauge" height="600">  
+  <img alt="Shows a gauge" width="500">  
 </picture>
 
 5. demo
