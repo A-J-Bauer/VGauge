@@ -78,6 +78,14 @@ let gauge = new VGauge('gaugeContainer', settings);
 gauge.value = 34.6;
 
 ```
+result:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
+  <img alt="gauge with basic settings" height="200">  
+</picture>
+
 ### Single Color
 
 
@@ -89,15 +97,6 @@ gauge.value = 34.6;
 
 
 
-
-
-result:
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
-  <img alt="gauge with basic settings" height="200">  
-</picture>
 
 
 
