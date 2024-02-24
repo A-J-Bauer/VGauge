@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" style="user-select:none">
+	<rect x="-50" y="-50" width="100" height="100" stroke="none" fill="none"></rect>
+	<g font-family="Open Sans, sans-serif">
+		<text text-anchor="middle" x="0" y="-10" fill="currentColor" font-size="7px">Room 1</text>
+		<text text-anchor="start" x="2" y="39" fill="currentColor" font-size="11px">°C</text>
+		<text text-anchor="end" x="40" y="20" fill="currentColor" font-size="1rem">34.6</text>
+	</g>
+	<g></g>
+	<g></g>
+	<path fill="#dee2e6" opacity="1" d="M 1.959434878635765e-15,32 A 32 32 202.79999999999922 1 1 12.400498766466873 -29.499620850832194 L 15.500623458083592,-36.874526063540245 A 40 40 202.79999999999922 1 0 2.4492935982947065e-15 40 L 1.959434878635765e-15,32 Z"></path>
+</svg>
