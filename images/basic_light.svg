@@ -5,7 +5,5 @@
 		<text text-anchor="start" x="2" y="39" fill="currentColor" font-size="11px">°C</text>
 		<text text-anchor="end" x="40" y="20" fill="currentColor" font-size="1rem">34.6</text>
 	</g>
-	<g></g>
-	<g></g>
 	<path fill="#212529" opacity="1" d="M 1.959434878635765e-15,32 A 32 32 202.79999999999922 1 1 12.400498766466873 -29.499620850832194 L 15.500623458083592,-36.874526063540245 A 40 40 202.79999999999922 1 0 2.4492935982947065e-15 40 L 1.959434878635765e-15,32 Z"></path>
 </svg>
