@@ -77,6 +77,13 @@ let gauge = new VGauge('gaugeContainer', settings);
 gauge.value = 34.6;
 
 ```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
+  <img alt="Shows a gauge" height="600">  
+</picture>
+
+
 
 4. settings names help
 
