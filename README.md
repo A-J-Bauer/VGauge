@@ -103,8 +103,8 @@ result:
 4. settings names help
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/names_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/gauge2_cc_black.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_dark.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_light.svg">
   <img alt="Shows a gauge" width="500">  
 </picture>
 
