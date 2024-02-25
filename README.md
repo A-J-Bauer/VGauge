@@ -1,3 +1,4 @@
+# <a id="top"></a>
 # VGauge
 
 javascript svg circular gauge widget
@@ -6,17 +7,15 @@ _"zero dependencies and scales nicely on touch devices"_
 
 [demo playground](https://a-j-bauer.github.io/vgauge/)
 
-
-# <a id="example-table">
 | Example | Description
 | ----------- | ----------- |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120">/picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
-| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="150"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
 
-
-<a id="basic"></a> [Back to list](#example-table)
 
 ## Basic
+
+Simple gauge with a value indicator, a name, a unit and a value label.
 
 ```html
 <div id="gaugeContainer">
@@ -28,18 +27,13 @@ _"zero dependencies and scales nicely on touch devices"_
 <script src="/somepath/vgauge.js"></script>
 ```
 
-Simple gauge with a value indicator, a name, a unit and a value label.
+```javascript
 
-> [!NOTE]
-> The fill color used for all elements of the gauge is the color style of the container (currentColor).
+let gauge = new VGauge('gaugeContainer', settings);
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
-  <img alt="gauge with basic settings" height="200">  
-</picture>
+gauge.value = 34.6;
 
-
+```
 
 <details>
 <summary>settings JSON</summary>
@@ -141,20 +135,18 @@ const settings = {
 ```
 </details>
 
+> [!NOTE]
+> The fill color used for all elements of the gauge is the color style of the container (currentColor).
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
+  <img alt="gauge with basic settings" height="200">  
+</picture>
 
+<!-- ####################################################################################################################### -->
 
-```javascript
-
-let gauge = new VGauge('gaugeContainer', settings);
-
-gauge.value = 34.6;
-
-```
-
-
-
-<a id="custom-indicator-color"></a> [Back to top](#example-table)
+<a id="custom-indicator-color"></a> [Back to top](#top)
 
 ## Custom Indicator Color
 
