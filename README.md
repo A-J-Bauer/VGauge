@@ -135,20 +135,22 @@ const settings = {
 ```
 </details>
 
-> [!NOTE]
-> The fill color used for all elements of the gauge is the color style of the container (currentColor).
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
   <img alt="gauge with basic settings" height="200">  
 </picture>
 
+> [!NOTE]
+> The fill color used for all elements of the gauge is the color style of the container (currentColor).
+
 <!-- ####################################################################################################################### -->
 
 <a id="custom-indicator-color"></a> [Back to top](#top)
 
 ## Custom Indicator Color
+
+Gauge with a custom color value indicator, a name, a unit and a value label.
 
 ```html
 <div id="gaugeContainer">
@@ -159,18 +161,16 @@ const settings = {
 ```javascript
 <script src="/somepath/vgauge.js"></script>
 ```
+```javascript
 
-Gauge with a custom color value indicator, a name, a unit and a value label.
+let gauge = new VGauge('gaugeContainer', settings);
 
-> [!NOTE]
-> The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color set for the underlying sector.
-> The underlying sector's opacity can be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
+gauge.value = 15.8;
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
-  <img alt="gauge with custom indicator color" height="200">  
-</picture>
+```
+
+<details>
+<summary>settings initializer</summary>
 
 ```javascript
 
@@ -223,6 +223,7 @@ const settings = {
 }
 };
 ```
+</details>
 
 <details>
 
@@ -286,13 +287,20 @@ const settings = {
 </details>
 
 
-```javascript
 
-let gauge = new VGauge('gaugeContainer', settings);
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
+  <img alt="gauge with custom indicator color" height="200">  
+</picture>
 
-gauge.value = 15.8;
+> [!NOTE]
+> The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color set for the underlying sector.
+> The underlying sector's opacity can be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
 
-```
+<!-- ####################################################################################################################### -->
+
+<a id="custom-indicator-color"></a> [Back to top](#top)
 
 ***
 
