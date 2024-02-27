@@ -483,7 +483,7 @@ const settings = {
 ***
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_dark.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="images/names1_dark.svg">
   <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_light.svg">
   <img alt="Shows a gauge" width="500">  
 </picture>
