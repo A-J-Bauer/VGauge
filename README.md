@@ -15,7 +15,9 @@ _"zero dependencies and scales nicely on touch devices"_
 | ----------- | ----------- |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120">/picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
-| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#multi-color) | This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue for 'too cold', green for 'all good', red for 'too hot'. |
+
+<a id="basic"></a> [Back to top](#top)
 
 &nbsp;
 
@@ -294,8 +296,6 @@ const settings = {
 
 </details>
 
-
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
@@ -308,13 +308,171 @@ const settings = {
 
 <!-- ####################################################################################################################### -->
 
-<a id="custom-indicator-color"></a> [Back to top](#top)
+<a id="multi-color"></a> [Back to top](#top)
 
 &nbsp;
 
 ### Multicolor
 
-This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue = too cold, green = good, red = too hot.
+This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue for 'too cold', green for 'all good', red for 'too hot'.
+
+```html
+<div id="gaugeContainer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
+</div>
+```
+
+```javascript
+<script src="/somepath/vgauge.js"></script>
+```
+```javascript
+
+let gauge = new VGauge('gaugeContainer', settings);
+
+gauge.value = 23.2;
+
+```
+
+<details>
+<summary>settings initializer</summary>
+
+```javascript
+
+const settings = {
+    name: 'Room 1',
+    unit: '°C',
+    min: -20,
+    max: 50,
+    startAngle: 90,
+    sweepAngle: 260,
+    cluster:
+    {
+        innerRadius: 30,
+        outerRadius: 40,
+        sectors: [
+            {
+                fill: '#0d6efd',
+                opacity: 0.1,
+                sweepTo: 20
+            },
+            {
+                fill: '#198754',
+                opacity: 0.1,
+                sweepTo: 30
+            },
+            {
+                fill: '#dc3545',
+                opacity: 0.1,
+                sweepTo: 50
+            }
+        ]
+    },
+    indicator:
+    {
+        innerRadius: 32,
+        outerRadius: 40
+    },
+    tweek:
+    {
+        fontFamily: '',
+        backgroundColor: '',
+        name:
+        {
+            x: 0,
+            y: -10,
+            fill: '',
+            fontSize: '7px'
+        },
+        unit:
+        {
+            x: 2,
+            y: 39,
+            fill: '',
+            fontSize: '11px'
+        },
+        value:
+        {
+            x: 40,
+            y: 20,
+            fill: '',
+            fontSize: '1rem',
+            decimals: 1
+        }
+    }
+};
+```
+</details>
+
+<details>
+
+<summary>JSON</summary>
+
+```javascript
+   {
+    "name": "Room 1",
+    "unit": "°C",
+    "min": -20,
+    "max": 50,
+    "startAngle": 90,
+    "sweepAngle": 260,
+    "cluster": {
+        "innerRadius": 30,
+        "outerRadius": 40,
+        "sectors": [
+            {
+                "fill": "#0d6efd",
+                "opacity": 0.1,
+                "sweepTo": 20
+            },
+            {
+                "fill": "#198754",
+                "opacity": 0.1,
+                "sweepTo": 30
+            },
+            {
+                "fill": "#dc3545",
+                "opacity": 0.1,
+                "sweepTo": 50
+            }
+        ]
+    },
+    "indicator": {
+        "innerRadius": 32,
+        "outerRadius": 40
+    },
+    "tweek": {
+        "fontFamily": "",
+        "backgroundColor": "",
+        "name": {
+            "x": 0,
+            "y": -10,
+            "fill": "",
+            "fontSize": "7px"
+        },
+        "unit": {
+            "x": 2,
+            "y": 39,
+            "fill": "",
+            "fontSize": "11px"
+        },
+        "value": {
+            "x": 40,
+            "y": 20,
+            "fill": "",
+            "fontSize": "1rem",
+            "decimals": 1
+        }
+    }
+}
+```
+
+</details>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg">
+  <img alt="gauge with custom indicator color" height="200">  
+</picture>
 
 
 ### Add an icon
