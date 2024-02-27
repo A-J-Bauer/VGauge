@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="google" content="notranslate">
+
+    <title>vgauge demo</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/css/open-sans.min.css" rel="stylesheet">
+
+
+    <style>
+        html, body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            height: 100%
+        }
+
+        button {
+            white-space: nowrap;
+        }
+
+        #demo {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nineByNine {
+            display: grid;
+            grid-template-rows: repeat(4, 1fr);
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 380px;
+            box-sizing: border-box;
+        }
+
+            .nineByNine .box {
+                box-sizing: border-box;
+            }
+
+        .gaugeContainer {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 380px;
+        }
+
+        #settingsEditView {
+            width: 100%;
+            max-width: 512px;
+        }
+
+        #settingsEditJson, #settingsViewInitializer {
+            font-family: monospace;
+            /*overflow: auto;*/
+            white-space: pre;
+        }
+
+        .modal-content {
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <script>'strict'
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);</script>
+
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="navbar-text">vgauge demo</div>
+            <div class="navbar-item">
+                <a class="nav-link" href="https://github.com/A-J-Bauer/VGauge/tree/main"><i class="bi bi-github"></i></a>
+            </div>
+            <div class="btn-group" role="group" aria-label="dark light theme">
+                <button id="darkThemeBtn" type="button" class="btn btn-dark">Dark</button>
+                <button id="lightThemeBtn" type="button" class="btn btn-light">Light</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-center">
+
+        <div class="row row-cols-1 mt-4 mb-4">
+            <div class="col">
+                <div id="demo">
+                    <!--
+                    to make the gauge container focusable/selectable:
+                    - add tabindex="0" to the container div
+                    - for bootstrap add form-control, mb-2 and mt-2 to class
+                    -->
+                    <div id="gaugeContainer">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1">
+            <div class="col d-flex justify-content-center mb-3">
+                <div>
+                    <input type="checkbox" class="btn-check" id="demoShow4By4" autocomplete="off">
+                    <label class="btn btn-primary" style="width:5em" for="demoShow4By4"
+                           data-bs-toggle="tooltip" data-bs-title="multiple instances">
+                        4x4
+                    </label>
+                </div>
+                <div class="input-group ms-2 me-2" style="max-width:7em">
+                    <span class="input-group-text">fps</span>
+                    <input id="gaugeFpsInp" type="text" class="form-control text-center" readonly>
+                </div>
+                <div>
+                    <input type="checkbox" class="btn-check" id="gaugeStartStopToggle" autocomplete="off">
+                    <label class="btn btn-success" style="width:5em" for="gaugeStartStopToggle"
+                           data-bs-toggle="tooltip" data-bs-title="toggle measurement">
+                        Start
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1">
+            <div class="col d-flex justify-content-center">
+                <div class="d-flex">
+                    <button id="gaugeRecreateBtn" type="button" class="btn btn-primary me-2"
+                            data-bs-toggle="tooltip" data-bs-title="recreate from JSON">
+                        <i class="bi bi-arrow-clockwise"></i> recreate
+                    </button>
+                    <div>
+                        <input type="checkbox" class="btn-check" id="helperGridToggle" autocomplete="off">
+                        <label class="btn btn-primary me-2" for="helperGridToggle"
+                               data-bs-toggle="tooltip" data-bs-title="toggle grid">
+                            <i class="bi bi-grid-3x3"></i>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="btn-check" id="iconToggle" autocomplete="off">
+                        <label class="btn btn-primary me-2" for="iconToggle"
+                               data-bs-toggle="tooltip" data-bs-title="toggle icon">
+                            <i class="bi bi-fire"></i>
+                        </label>
+                    </div>
+                    <button id="targetValueDecreaseBtn" type="button" class="btn btn-primary me-2"
+                            data-bs-toggle="tooltip" data-bs-title="decrease target value">
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <button id="targetValueIncreaseBtn" type="button" class="btn btn-primary"
+                            data-bs-toggle="tooltip" data-bs-title="increase target value">
+                        <i class="bi bi-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 mt-4 mb-2">
+            <div class="col d-flex justify-content-center">
+                <div id="settingsEditView">
+                    <ul class="nav nav-pills m-3" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation"
+                            data-bs-toggle="tooltip" data-bs-title="edit JSON">
+                            <button class="nav-link active"
+                                    id="editJson"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#editJson-pane"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="editJson-pane"
+                                    aria-selected="true">
+                                <i class="bi bi-filetype-json"></i> <i class="bi bi-pencil"></i>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation"
+                            data-bs-toggle="tooltip" data-bs-title="view settings initializer">
+                            <button class="nav-link"
+                                    id="viewInitializer"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#viewInitializer-pane"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="viewInitializer-pane"
+                                    aria-selected="false">
+                                <i class="bi bi-filetype-js"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane mb-2 mt-2 fade show active" id="editJson-pane" role="tabpanel" aria-labelledby="editJson" tabindex="0">
+                            <textarea class="form-control" id="settingsEditJson" rows="16" spellcheck="false"></textarea>
+                        </div>
+                        <div class="tab-pane mb-2 mt-2 fade" id="viewInitializer-pane" role="tabpanel" aria-labelledby="viewInitializer" tabindex="0">
+                            <textarea class="form-control" id="settingsViewInitializer" readonly rows="16" spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div id="errorModal" class="modal fade" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="errorModalLabel">VGauge</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://github.com/A-J-Bauer/VGauge/dist/vgauge.js"></script>
+
+
+    <script>document.addEventListener('DOMContentLoaded', (event) => {
+
+            const rootStyles = getComputedStyle(document.documentElement);
+            const bootStrapColorYellow = rootStyles.getPropertyValue('--bs-yellow');
+            const bootStrapColorBlue = rootStyles.getPropertyValue('--bs-blue');
+            const bootStrapColorGreen = rootStyles.getPropertyValue('--bs-green');
+            const bootStrapColorRed = rootStyles.getPropertyValue('--bs-red');
+
+            // fire icon
+            const bootstrapFireIcon = `<path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>`
+
+            const settings = {
+                name: 'Room 1',
+                unit: '°C',
+                min: -20,
+                max: 50,
+                startAngle: 90,
+                sweepAngle: 260,
+                useHelperGrid: true,
+                cluster: {
+                    innerRadius: 30,
+                    outerRadius: 40,
+                    useTickLabels: true,
+                    sectors: [
+                        { fill: bootStrapColorYellow, opacity: 0.1, sweepTo: -5 },
+                        { fill: bootStrapColorBlue, opacity: 0.1, sweepTo: 20 },
+                        { fill: bootStrapColorGreen, opacity: 0.1, sweepTo: 30 },
+                        { fill: bootStrapColorRed, opacity: 0.1, sweepTo: 50 }
+                    ]
+                },
+                indicator: {
+                    innerRadius: 32,
+                    outerRadius: 40
+                },
+                targetValue: {
+                    min: 10,
+                    max: 40,
+                    indicator: {
+                        radius: 35,
+                        path: '<path d="M 0,0 L -4,6 L 4,6 Z"></path>',
+                        fill: ''
+                    },
+                    label: {
+                        radius: 44.5,
+                        fontSize: '6px',
+                        fill: ''
+                    }
+                },
+                tweek: {
+                    fontFamily: '',
+                    backgroundColor: '',
+                    name: { x: 0, y: -10, fill: '', fontSize: '7px' },
+                    unit: { x: 2, y: 39, fill: '', fontSize: '11px' },
+                    value: { x: 40, y: 20, fill: '', fontSize: '1rem', decimals: 1 },
+                    ticks: { radius: 44, fontSize: '8px', fill: '#7f7f7f', opacity: 0.1 },
+                },
+                icons: [{ id: 1, x: 34, y: -45, scale: 1, fill: '', opacity: 1.0, path: bootstrapFireIcon }]
+            };
+
+
+
+
+            const gaugeStartStopToggle = document.querySelector('#gaugeStartStopToggle');
+            const gaugeRecreateBtn = document.querySelector('#gaugeRecreateBtn');
+            const settingsEditJson = document.querySelector('#settingsEditJson');
+            const settingsViewInitializer = document.querySelector('#settingsViewInitializer');
+            const errorModal = new bootstrap.Modal('#errorModal', { keyboard: true });
+            const gaugeFpsInp = document.querySelector('#gaugeFpsInp');
+            const helperGridToggle = document.querySelector('#helperGridToggle');
+            const iconToggle = document.querySelector('#iconToggle');
+            const targetValueDecreaseBtn = document.querySelector('#targetValueDecreaseBtn');
+            const targetValueIncreaseBtn = document.querySelector('#targetValueIncreaseBtn');
+            const demoShow4By4 = document.querySelector('#demoShow4By4');
+
+            const demo = document.querySelector('#demo');
+            const gaugeContainerClone = document.querySelector('#gaugeContainer').cloneNode(true);
+
+            const rows = 4;
+            const cols = 4;
+            const gauges = [];
+            const gaugeContainers = [];
+
+            demo.innerHTML = '';
+            for (var i = 0; i < rows * cols; i++) {
+                const box = document.createElement('div');
+                box.classList.add('box');
+                const gaugeContainer = gaugeContainerClone.cloneNode(true);
+                gaugeContainer.setAttribute('id', 'gaugeContainer' + i);
+                gaugeContainer.classList.add('gaugeContainer');
+                box.append(gaugeContainer);
+                demo.append(box);
+
+                if (i > 0) {
+                    gaugeContainer.style.display = 'none';
+                }
+
+                gauges[i] = new VGauge('gaugeContainer' + i, settings);
+                gaugeContainers[i] = gaugeContainer;
+            }
+
+
+            demoShow4By4.onchange = function (e) {
+                demo.classList.toggle('nineByNine', this.checked);
+                for (var i = 1; i < rows * cols; i++) {
+                    gaugeContainers[i].style.display = (this.checked ? 'inherit' : 'none');
+                }
+            }
+
+            // fps measurement
+
+            const NUM_SAMPLES = 10.0;
+            let now = 0;
+            let prev = 0;
+            let diff = 0;
+            let diffAvg = 0.0;
+            let samples = 0;
+            let lastChangeMs = 0;
+            let stop = true;
+            let value = 0;
+            let delta = 0.1;
+
+            function synchronizeWithBrowserRepaintCycle(timestamp) {
+                if (!stop) {
+                    now = performance.now();
+                    if (prev !== 0) {
+                        diff = parseFloat(now - prev);
+                        diffAvg = (samples === 0 ? diff : ((NUM_SAMPLES - 1) * diffAvg + diff) / NUM_SAMPLES);
+                        if (samples < NUM_SAMPLES) {
+                            samples++;
+                        }
+                        else {
+                            gaugeFpsInp.value = (Math.round(1000.0 / diffAvg));
+                        }
+                    }
+
+                    if (now - lastChangeMs > 0) {
+                        lastChangeMs = now;
+
+                        value = gauges[0].value + delta;
+                        if (value >= gauges[0].max) {
+                            value = gauges[0].max;
+                            delta *= -1;
+                        }
+                        else if (value <= gauges[0].min) {
+                            value = gauges[0].min;
+                            delta *= -1;
+                        }
+
+                        for (var i = 0; i < rows * cols; i++) {
+                            gauges[i].value = value;
+                        }
+                    }
+                    prev = now;
+
+                    window.requestAnimationFrame(synchronizeWithBrowserRepaintCycle);
+                }
+            }
+            function startFpsMeasurement() {
+                stop = false;
+                diff = 0;
+                prev = 0;
+                lastChangeMs = now = performance.now();
+                synchronizeWithBrowserRepaintCycle();
+            }
+            function stopFpsMeasurement() {
+                stop = true;
+            }
+
+            gaugeStartStopToggle.onchange = function (e) {
+                if (this.checked && stop) {
+                    startFpsMeasurement();
+                } else {
+                    stopFpsMeasurement();
+                }
+
+                this.labels[0].innerHTML = this.checked ? 'Stop' : 'Start';
+                this.labels[0].classList.toggle('btn-success', !this.checked);
+                this.labels[0].classList.toggle('btn-danger', this.checked);
+            }
+
+            // edit, view, recreate (ctrl+s in json editor)
+
+            settingsEditJson.value = JSON.stringify(settings, null, 4);
+            settingsViewInitializer.value = VGauge.getObjectInitializer(settings, 4);
+
+            const recreateGaugesFromJson = function () {
+                try {
+                    for (var i = 0; i < rows * cols; i++) {
+                        gauges[i].settings = JSON.parse(settingsEditJson.value);
+                        gauges[i].recreate();
+                    }
+
+                    settingsViewInitializer.value = VGauge.getObjectInitializer(gauges[0].settings, 4);
+                } catch (error) {
+                    errorModal._element.querySelector('.modal-body').innerHTML =
+                        '<p>vgauge demo: error parsing json\n' + error + '</p>';
+                    errorModal.show();
+                }
+            }
+
+            settingsEditJson.addEventListener("keydown", function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+                    e.preventDefault();
+                    recreateGaugesFromJson();
+                }
+            });
+
+            // output console.error to modal
+
+            console.error = function (message) {
+                errorModal._element.querySelector('.modal-body').innerHTML =
+                    '<p>vgauge demo : ' + message + '</p>';
+                errorModal.show();
+            }
+
+            // dark / light theme
+
+            document.querySelector('#darkThemeBtn').onclick = function (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                for (var i = 0; i < rows * cols; i++) {
+                    gauges[i].refresh();
+                }
+            }
+            document.querySelector('#lightThemeBtn').onclick = function (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+                for (var i = 0; i < rows * cols; i++) {
+                    gauges[i].refresh();
+                }
+            }
+
+
+            // target value
+
+            let targetValue = gauges[0].settings.targetValue.min + parseInt((gauges[0].settings.targetValue.max - gauges[0].settings.targetValue.min) / 2);
+
+            for (var i = 0; i < rows * cols; i++) {
+                gauges[i].targetValue = targetValue;
+            }
+
+            targetValueDecreaseBtn.onclick = function (e) {
+                for (var i = 0; i < rows * cols; i++) {
+                    gauges[i].targetValue--;
+                }
+            }
+            targetValueIncreaseBtn.onclick = function (e) {
+                for (var i = 0; i < rows * cols; i++) {
+                    gauges[i].targetValue++;
+                }
+            }
+
+            // recreate
+
+            gaugeRecreateBtn.onclick = () => {
+                recreateGaugesFromJson();
+                for (var i = 0; i < rows * cols; i++) {
+
+                    // target value
+                    gauges[i].targetValue = targetValue;
+
+                    // fire icon
+                    gauges[i].setIconOpacity(1, iconToggle.checked ? 1 : 0);
+
+                    // grid
+                    gauges[i].gridOpacity = helperGridToggle.checked ? 1 : 0;
+                }
+            }
+
+
+            // helper grid
+
+            helperGridToggle.onclick = function (e) {
+                for (var i = 0; i < rows * cols; i++) {
+                    gauges[i].gridOpacity = this.checked ? 1 : 0;
+                }
+            }
+
+            // fire icon
+            for (var i = 0; i < rows * cols; i++) {
+                gauges[i].setIconOpacity(1, 0.0);
+            }
+
+            iconToggle.onclick = function (e) {
+
+                for (var i = 0; i < rows * cols; i++) {
+                    if (this.checked) {
+                        gauges[i].setIconOpacity(1, 1);
+                    }
+                    else {
+                        gauges[i].setIconOpacity(1, 0);
+                    }
+                }
+            }
+
+
+
+            if ('ontouchstart' in document.documentElement) {
+
+                // on touch devices prevent textarea scrolling if no focus
+                const textareas = document.querySelectorAll('textarea');
+                for (var i = 0; i < textareas.length; i++) {
+                    const textarea = textareas[i];
+                    textarea.style.overflow = 'hidden';
+                    textarea.addEventListener('focus', () => {
+                        textarea.style.overflow = 'scroll';
+                    });
+
+                    textarea.addEventListener('blur', () => {
+                        textarea.style.overflow = 'hidden';
+                    });
+                }
+            }
+            else {
+
+                // on others enable bootstrap tooltips (from documentation)
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                for (let i = 0; i < tooltipTriggerList.length; i++) {
+                    const tooltipTrigger = tooltipTriggerList[i];
+                    const tooltip = new bootstrap.Tooltip(tooltipTrigger);
+                    tooltipTrigger.addEventListener('click', () => {
+                        tooltip.hide(); // hide tooltip if tooltip trigger is clicked
+                    });
+                }
+            }
+
+
+        });</script>
+
+</body>
+
+</html>
