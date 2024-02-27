@@ -5,13 +5,19 @@ javascript svg circular gauge widget
 
 _"zero dependencies and scales nicely on touch devices"_
 
+
 [demo playground](https://a-j-bauer.github.io/vgauge/)
 
-| Example | Description
+&nbsp;
+
+
+| Examples | Description
 | ----------- | ----------- |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120">/picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
 
+&nbsp;
 
 ## Basic
 
@@ -147,6 +153,8 @@ const settings = {
 <!-- ####################################################################################################################### -->
 
 <a id="custom-indicator-color"></a> [Back to top](#top)
+
+&nbsp;
 
 ## Custom Indicator Color
 
@@ -302,8 +310,7 @@ const settings = {
 
 <a id="custom-indicator-color"></a> [Back to top](#top)
 
-***
-
+&nbsp;
 
 ### Multicolor
 
