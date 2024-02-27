@@ -2,5 +2,6 @@
   "name": "vgauge.js",
   "version": "1.0.0.0",
   "description": "javascript svg circular gauge widget",
-  "license": "MIT"
+  "license": "MIT",
+  "main" : "dist/vgauge.js"
 }
