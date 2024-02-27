@@ -1,2 +1,0 @@
-vgauge-1.0.0.min.js
-	integrity="sha256-8df5bc304a6bb03d8e7bd4af01fcc123f48d80fa1debf75046b5e9406ce7a490"
