@@ -474,15 +474,13 @@ const settings = {
   <img alt="gauge with custom indicator color" height="200">  
 </picture>
 
+> [!NOTE]
+> The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color of the underlying sector that the current value corresponds to.
+> The underlying sectors opacity can each be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
 
-### Add an icon
+&nbsp;
 
-
-
-
-
-
-4. settings names help
+***
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_dark.svg">
@@ -496,9 +494,7 @@ const settings = {
   <img alt="Shows a gauge" width="500">  
 </picture>
 
-
-
-5. demo
+***
 
 > [!TIP]
 > when using the demo, you can use ctrl-s inside the JSON editor to recreate.
