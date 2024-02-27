@@ -6,7 +6,7 @@ javascript svg circular gauge widget
 _"zero dependencies and scales nicely on touch devices"_
 
 
-[demo playground](https://a-j-bauer.github.io/vgauge/)
+[demo playground](https://a-j-bauer.github.io/VGauge/)
 
 &nbsp;
 
