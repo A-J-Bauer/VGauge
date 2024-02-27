@@ -1,7 +1,7 @@
 'strict'
 
 /*
- * vgauge
+ * VGauge
  * copyright (c) 2024 A.J.Bauer
  * licensed under the MIT License.
  * see LICENSE.txt for full license text.
