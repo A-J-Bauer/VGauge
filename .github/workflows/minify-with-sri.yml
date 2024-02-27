@@ -29,7 +29,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./
+        working-directory: ../
 
       - name: Minify JavaScript
         run: npm run minify
