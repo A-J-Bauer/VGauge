@@ -1,6 +1,6 @@
 'strict'
 
-// VGauge 1.0.0.0
+// VGauge 1.0.0
 // copyright (c) 2024 A.J.Bauer
 // licensed under the MIT License.
 // see LICENSE.txt for full license text.
