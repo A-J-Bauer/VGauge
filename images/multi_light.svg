@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" style="user-select:none">
 	<rect x="-50" y="-50" width="100" height="100" stroke="none" fill="none"></rect>
 	<g font-family="Open Sans, sans-serif">
-		<text text-anchor="middle" x="0" y="-10" fill="currentColor" font-size="7px">Room 1</text>
-		<text text-anchor="start" x="2" y="39" fill="currentColor" font-size="11px">°C</text>
-		<text text-anchor="end" x="40" y="20" fill="currentColor" font-size="1rem">23.2</text>
+		<text text-anchor="middle" x="0" y="-10" fill="212529" font-size="7px">Room 1</text>
+		<text text-anchor="start" x="2" y="39" fill="212529" font-size="11px">°C</text>
+		<text text-anchor="end" x="40" y="20" fill="212529" font-size="1rem">23.2</text>
 	</g>
 	<g>
 		<path d="M 1.83697019872103e-15,30 A 30 30 148.5714285714286 0 1 -15.643056101384934 -25.598726448964676 L -20.85740813517991,-34.131635265286235 A 40 40 148.5714285714286 0 0 2.4492935982947065e-15 40 L 1.83697019872103e-15,30 Z" opacity="0.1" fill="#0d6efd"></path>
