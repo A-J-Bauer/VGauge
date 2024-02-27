@@ -32,7 +32,7 @@ Simple gauge with a value indicator, a name, a unit and a value label.
 ```
 
 ```javascript
-<script src="/somepath/vgauge.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge.min.js"></script>
 ```
 
 ```javascript
@@ -169,7 +169,7 @@ Gauge with a custom color value indicator, a name, a unit and a value label.
 ```
 
 ```javascript
-<script src="/somepath/vgauge.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge.min.js"></script>
 ```
 ```javascript
 
@@ -323,7 +323,7 @@ This is the intended style for the gauge, giving the user visual feedback (at a 
 ```
 
 ```javascript
-<script src="/somepath/vgauge.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge.min.js"></script>
 ```
 ```javascript
 
