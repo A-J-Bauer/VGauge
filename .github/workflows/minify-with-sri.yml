@@ -6,7 +6,7 @@ on:
     inputs:
       name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+        description: 'DummyInput'
         # Default value if no value is explicitly provided
         default: 'World'
         # Input has to be provided for the workflow to run
@@ -14,7 +14,6 @@ on:
         # The data type of the input
         type: string
   
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,10 +25,11 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./
 
       - name: Minify JavaScript
         run: npm run minify
