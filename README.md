@@ -1,28 +1,97 @@
+# <a id="top"></a>
 # VGauge
 
-A javascript svg gauge
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
-  <img alt="gauge with basic settings" height="150">  
-</picture>
+javascript svg circular gauge widget
 
 _"zero dependencies and scales nicely on touch devices"_
 
-demo here
+[demo playground](https://a-j-bauer.github.io/vgauge/)
 
-## Cookbook
+| Example | Description
+| ----------- | ----------- |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120">/picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
 
-### Basic
+
+## Basic
+
+Simple gauge with a value indicator, a name, a unit and a value label.
 
 ```html
 <div id="gaugeContainer">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
 </div>
 ```
+
+```javascript
+<script src="/somepath/vgauge.js"></script>
+```
+
 ```javascript
 
+let gauge = new VGauge('gaugeContainer', settings);
+
+gauge.value = 34.6;
+
+```
+
+<details>
+<summary>settings JSON</summary>
+
+  ```javascript
+   {
+    "name": "Room 1",
+    "unit": "°C",
+    "min": -20,
+    "max": 50,
+    "startAngle": 90,
+    "sweepAngle": 260,
+    "cluster": {
+        "innerRadius": 30,
+        "outerRadius": 40,
+        "sectors": [            
+            {
+                "fill": "#ffc107",
+                "opacity": 0.01,
+                "sweepTo": 50
+            }
+        ]
+    },
+    "indicator": {
+        "innerRadius": 32,
+        "outerRadius": 40
+    },
+    "tweek": {
+        "fontFamily": "",
+        "backgroundColor": "",
+        "name": {
+            "x": 0,
+            "y": -10,
+            "fill": "",
+            "fontSize": "7px"
+        },
+        "unit": {
+            "x": 2,
+            "y": 39,
+            "fill": "",
+            "fontSize": "11px"
+        },
+        "value": {
+            "x": 40,
+            "y": 20,
+            "fill": "",
+            "fontSize": "1rem",
+            "decimals": 1
+        }
+    }
+}
+```
+</details>
+
+<details>
+<summary>settings initializer</summary>
+
+  ```javascript
 const settings = {
     name: 'Room 1',
     unit: '°C',
@@ -60,25 +129,11 @@ const settings = {
             fill: '',
             fontSize: '1rem',
             decimals: 1
-        },
-        ticks:
-        {
-            radius: 44,
-            fontSize: '8px',
-            fill: '#7f7f7f',
-            opacity: 0.1
         }
     }
 };
 ```
-```javascript
-
-let gauge = new VGauge('gaugeContainer', settings);
-
-gauge.value = 34.6;
-
-```
-result:
+</details>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
@@ -86,11 +141,173 @@ result:
   <img alt="gauge with basic settings" height="200">  
 </picture>
 
-### Single Color
+> [!NOTE]
+> The fill color used for all elements of the gauge is the color style of the container (currentColor).
+
+<!-- ####################################################################################################################### -->
+
+<a id="custom-indicator-color"></a> [Back to top](#top)
+
+## Custom Indicator Color
+
+Gauge with a custom color value indicator, a name, a unit and a value label.
+
+```html
+<div id="gaugeContainer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
+</div>
+```
+
+```javascript
+<script src="/somepath/vgauge.js"></script>
+```
+```javascript
+
+let gauge = new VGauge('gaugeContainer', settings);
+
+gauge.value = 15.8;
+
+```
+
+<details>
+<summary>settings initializer</summary>
+
+```javascript
+
+const settings = {
+    {
+    "name": "Room 1",
+    "unit": "°C",
+    "min": -20,
+    "max": 50,
+    "startAngle": 90,
+    "sweepAngle": 260,
+    "cluster": {
+        "innerRadius": 30,
+        "outerRadius": 40,
+        "sectors": [
+            {
+                "fill": "#ffc107",
+                "opacity": 0.01,
+                "sweepTo": 50
+            }
+        ]
+    },
+    "indicator": {
+        "innerRadius": 32,
+        "outerRadius": 40
+    },
+    "tweek": {
+        "fontFamily": "",
+        "backgroundColor": "",
+        "name": {
+            "x": 0,
+            "y": -10,
+            "fill": "",
+            "fontSize": "7px"
+        },
+        "unit": {
+            "x": 2,
+            "y": 39,
+            "fill": "",
+            "fontSize": "11px"
+        },
+        "value": {
+            "x": 40,
+            "y": 20,
+            "fill": "",
+            "fontSize": "1rem",
+            "decimals": 1
+        }
+    }
+}
+};
+```
+</details>
+
+<details>
+
+<summary>JSON</summary>
+
+```javascript
+   {
+    name: 'Room 1',
+    unit: '°C',
+    min: -20,
+    max: 50,
+    startAngle: 90,
+    sweepAngle: 260,
+    cluster:
+    {
+        innerRadius: 30,
+        outerRadius: 40,
+        sectors: [
+            {
+                fill: '#ffc107',
+                opacity: 0.01,
+                sweepTo: 50
+            }
+        ]
+    },
+    indicator:
+    {
+        innerRadius: 32,
+        outerRadius: 40
+    },
+    tweek:
+    {
+        fontFamily: '',
+        backgroundColor: '',
+        name:
+        {
+            x: 0,
+            y: -10,
+            fill: '',
+            fontSize: '7px'
+        },
+        unit:
+        {
+            x: 2,
+            y: 39,
+            fill: '',
+            fontSize: '11px'
+        },
+        value:
+        {
+            x: 40,
+            y: 20,
+            fill: '',
+            fontSize: '1rem',
+            decimals: 1
+        }
+    }
+}
+```
+
+</details>
 
 
 
-### As intended
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
+  <img alt="gauge with custom indicator color" height="200">  
+</picture>
+
+> [!NOTE]
+> The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color set for the underlying sector.
+> The underlying sector's opacity can be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
+
+<!-- ####################################################################################################################### -->
+
+<a id="custom-indicator-color"></a> [Back to top](#top)
+
+***
+
+
+### Multicolor
+
+This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue = too cold, green = good, red = too hot.
 
 
 ### Add an icon
@@ -107,6 +324,14 @@ result:
   <source media="(prefers-color-scheme: dark)" srcset="images/name_defs_light.svg">
   <img alt="Shows a gauge" width="500">  
 </picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/names2_dark.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="images/names2_light.svg">
+  <img alt="Shows a gauge" width="500">  
+</picture>
+
+
 
 5. demo
 
