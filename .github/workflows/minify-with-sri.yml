@@ -1,4 +1,4 @@
-name: MinifyWithSri
+name: minify-with-sri
 
 on:
   push:
