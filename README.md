@@ -305,7 +305,9 @@ const settings = {
 ***
 
 
-### As intended
+### Multicolor
+
+This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue = too cold, green = good, red = too hot.
 
 
 ### Add an icon
