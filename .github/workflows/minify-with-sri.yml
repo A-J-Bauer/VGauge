@@ -1,0 +1,40 @@
+name: MinifyWithSri
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Minify JavaScript
+        run: npm run minify
+
+      - name: Calculate SHA-256 hash
+        id: sha256
+        run: echo "::set-output name=hash::$(openssl dgst -sha256 dist/vgauge.min..js | awk '{print $NF}')"
+
+      - name: Upload minified file as an asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/vgauge.min.js
+          asset_name: vgauge.min.js
+          asset_content_type: application/javascript
+          asset_sha256: ${{ steps.sha256.outputs.hash }}
