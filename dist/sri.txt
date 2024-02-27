@@ -1,0 +1,2 @@
+cat vgauge.min.js | openssl dgst -sha384 -binary | openssl base64 -A
+-> vgauge.min: sha384-VdU396ZQbaEZw9iB415qVYo/IeLQEREUvHD3M/G04rMk4y0T9KsaUz6Rizjb7rjZ
