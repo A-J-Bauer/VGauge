@@ -12,4 +12,4 @@ jobs:
       - name: Parse file, read version, check if exists in dist, if not write file and minified version to dist
         run: |
              echo "minify version publish to dist" 
-             dotnet run --project .github/MinifyVersionPublishToDist/MinifyVersionPublishToDist.csproj "vgauge.js" >> $GITHUB_ENV
+             dotnet run --project .github/MinifyVersionPublishToDist/MinifyVersionPublishToDist.csproj vgauge.js >> $GITHUB_ENV
