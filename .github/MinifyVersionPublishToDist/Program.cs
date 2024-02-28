@@ -28,7 +28,7 @@ namespace MinifyVersionPublishToDist
 
         public static class Warning
         {
-            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string caller = null)
+            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
             {
                 Echo.WriteLine($"echo \"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}\"");
             }
@@ -44,9 +44,10 @@ namespace MinifyVersionPublishToDist
         {
             Echo.Debug.WriteLine("Houston?");
             Echo.Warning.WriteLine("Texas?");
-        }
 
-        Environment.Exit(0);
+
+            Environment.Exit(0);
+        }
     }
     //string[] cmdargs = Environment.GetCommandLineArgs();
     //Echo.WriteLine(cmdargs[0]);

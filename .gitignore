@@ -5,3 +5,5 @@
 /_save
 /.vs
 /.github/MinifyVersionPublishToDist/obj
+/.github/MinifyVersionPublishToDist/.vs/MinifyVersionPublishToDist
+/.github/MinifyVersionPublishToDist/bin/Debug/net6.0
