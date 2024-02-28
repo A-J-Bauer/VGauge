@@ -23,6 +23,7 @@ using System.Xml.Linq;
     return 0     on success    
     return >0   failure
 */
+Console.WriteLine("Houston?");
 
 string[] cmdargs = Environment.GetCommandLineArgs();
 Console.WriteLine(cmdargs[0]);

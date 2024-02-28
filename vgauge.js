@@ -639,6 +639,6 @@ class VGauge {
         if (icon) {
             icon.setAttribute('opacity', opacity);
         }
-    }  
+    }
 
 }
