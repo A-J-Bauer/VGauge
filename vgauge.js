@@ -197,13 +197,13 @@ class VGauge {
                     }
                 }
                 this._svg.append(this._svgElems.cluster);
-            }
 
-            if (this._settings.cluster.useTickLabels) {
-                this._svgElems.ticks = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                this._svg.append(this._svgElems.ticks);
+                if (this._settings.cluster.useTickLabels) {
+                    this._svgElems.ticks = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    this._svg.append(this._svgElems.ticks);
+                }
             }
-
+            
             if (VGauge.isNonEmptyArray(this._settings.icons)) {
                 this._svgElems.icons = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 for (var i = 0; i < this._settings.icons.length; i++) {

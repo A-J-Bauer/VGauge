@@ -1,0 +1,15 @@
+name: minify-version-publish-to-dist
+on:
+  push:
+    paths:
+      - 'vgauge.js'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: parse file, read version, check if exists in dist, if not write file and minified version to dist
+        run: |
+             echo "minify version publish to dist"
+             dotnet run --project .github/MinifyVersionPublishToDist/MinifyVersionPublishToDist.csproj VGauge/VGauge.csproj >> $GITHUB_ENV
