@@ -34,6 +34,15 @@ namespace MinifyVersionPublishToDist
             }
 
         }
+
+        public static class Error
+        {
+            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
+            {
+                Echo.WriteLine($"::error file={"Program.cs"},line={line},endLine={line},title={"error"}::{message}");
+            }
+
+        }
     }
 
 
@@ -42,32 +51,42 @@ namespace MinifyVersionPublishToDist
 
         static void Main(string[] args)
         {
+            Echo.Error.WriteLine("Apollo?");
             Echo.Debug.WriteLine("Houston?");
             Echo.Warning.WriteLine("Texas?");
+
+            string[] cmdargs = Environment.GetCommandLineArgs();
+            for (int i = 0; i < cmdargs.Length; i++)
+            {
+                Echo.Debug.WriteLine(cmdargs[i]);
+            }
+
+
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string[] files = Directory.GetFiles(currentDirectory);
+
+            Echo.Debug.WriteLine("Files in the current directory:");
+            foreach (string file in files)
+            {
+                Echo.Debug.WriteLine(file);
+            }
+
+            //string houston = "Houston?";
+
+            //Console.WriteLine($"messageFromEagle={houston}");
+
+
+            //var minifier = new Microsoft.Ajax.Utilities.Minifier();
+            //var minifiedString = minifier.MinifyJavaScript(unMinifiedString);
+
+
+
 
 
             Environment.Exit(0);
         }
     }
-    //string[] cmdargs = Environment.GetCommandLineArgs();
-    //Echo.WriteLine(cmdargs[0]);
 
-    //string currentDirectory = Directory.GetCurrentDirectory();
-    //string[] files = Directory.GetFiles(currentDirectory);
-
-    //Echo.WriteLine("Files in the current directory:");
-    //foreach (string file in files)
-    //{
-    //    Debug.WriteLine(file);
-    //}
-
-    //string houston = "Houston?";
-
-    //Console.WriteLine($"messageFromEagle={houston}");
-
-
-    //var minifier = new Microsoft.Ajax.Utilities.Minifier();
-    //var minifiedString = minifier.MinifyJavaScript(unMinifiedString);
 
 
 
