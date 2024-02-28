@@ -22,7 +22,7 @@ namespace MinifyVersionPublishToDist
         {
             public static void WriteLine(string? message)
             {
-                Echo.WriteLine($"echo \"::debug::{message}\"");
+                Echo.WriteLine($"::debug::{message}");
             }
         }
 
@@ -30,7 +30,7 @@ namespace MinifyVersionPublishToDist
         {
             public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
             {
-                Echo.WriteLine($"echo \"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}\"");
+                Echo.WriteLine($"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}");
             }
 
         }
