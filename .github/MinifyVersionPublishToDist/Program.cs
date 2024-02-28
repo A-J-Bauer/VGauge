@@ -1,4 +1,3 @@
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +24,8 @@ using System.Xml.Linq;
     return >0   failure
 */
 
-Console.WriteLine("");
+string[] cmdargs = Environment.GetCommandLineArgs();
+Console.WriteLine(cmdargs[0]);
 
 string currentDirectory = Directory.GetCurrentDirectory();
 string[] files = Directory.GetFiles(currentDirectory);
