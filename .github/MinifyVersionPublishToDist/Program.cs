@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
@@ -8,35 +9,52 @@ using System.Xml.Linq;
 
 // author: A.J.Bauer
 
-/*  
-    Input path to .csproj relative to repo root e.g. myproj/myproj.csproj
 
-    Parse.csproj file for Version and Title
-    Get json versions array from NuGet
-    Check if version found in csproj is in the array
-   
-    if successful writes:
-    
-    check_version_published=yes
-    check_version_published=no
-
-    return 0     on success    
-    return >0   failure
-*/
-Console.WriteLine("Houston?");
-
-string[] cmdargs = Environment.GetCommandLineArgs();
-Console.WriteLine(cmdargs[0]);
-
-string currentDirectory = Directory.GetCurrentDirectory();
-string[] files = Directory.GetFiles(currentDirectory);
-
-Console.WriteLine("Files in the current directory:");
-foreach (string file in files)
+public static class Echo
 {
-    Console.WriteLine(file);
+    public static void WriteLine(string? message)
+    {
+        Console.WriteLine(message);
+    }
+
+    public static class Debug
+    {
+        public static void WriteLine(string? message)
+        {
+            Echo.WriteLine($"echo \"::debug::{message}\"");
+        }
+    }
+
+    public static class Warning
+    {
+        public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string caller = null)
+        {
+            Echo.WriteLine($"echo \"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}\"");
+        }
+
+    }
 }
 
+
+Echo.Debug.WriteLine("Houston?");
+Echo.Warning.WriteLine("Texas?");
+
+//string[] cmdargs = Environment.GetCommandLineArgs();
+//Echo.WriteLine(cmdargs[0]);
+
+//string currentDirectory = Directory.GetCurrentDirectory();
+//string[] files = Directory.GetFiles(currentDirectory);
+
+//Echo.WriteLine("Files in the current directory:");
+//foreach (string file in files)
+//{
+//    Debug.WriteLine(file);
+//}
+
+//string houston = "Houston?";
+
+//Console.WriteLine($"messageFromEagle={houston}");
+Environment.Exit(0);
 
 //var minifier = new Microsoft.Ajax.Utilities.Minifier();
 //var minifiedString = minifier.MinifyJavaScript(unMinifiedString);
