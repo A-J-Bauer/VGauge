@@ -1,7 +1,7 @@
 # <a id="top"></a>
 # VGauge
 
-javascript svg circular gauge widget
+ javascript svg circular gauge widget
 
 _"zero dependencies and scales nicely on touch devices"_
 
@@ -13,7 +13,7 @@ _"zero dependencies and scales nicely on touch devices"_
 
 | Examples | Description
 | ----------- | ----------- |
-| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120">/picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
+| [<picture><source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg"><img alt="gauge with basic settings" height="120"></picture>](#basic) | Simple gauge with a value indicator, a name, a unit and a value label. |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#custom-indicator-color) | Gauge with a custom color value indicator, a name, a unit and a value label. |
 | [<picture><source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg"><source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg"><img alt="gauge with custom indicator color" height="120"></picture>](#multi-color) | This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue for 'too cold', green for 'all good', red for 'too hot'. |
 
@@ -36,12 +36,16 @@ Simple gauge with a value indicator, a name, a unit and a value label.
 ```
 
 ```javascript
-
-let gauge = new VGauge('gaugeContainer', settings);
+const gauge = new VGauge('gaugeContainer', settings);
 
 gauge.value = 34.6;
-
 ```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
+  <img alt="gauge with basic settings" height="200">  
+</picture>
 
 <details>
 <summary>settings JSON</summary>
@@ -143,11 +147,6 @@ const settings = {
 ```
 </details>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/basic_light.svg">
-  <img alt="gauge with basic settings" height="200">  
-</picture>
 
 > [!NOTE]
 > The fill color used for all elements of the gauge is the color style of the container (currentColor).
@@ -172,12 +171,16 @@ Gauge with a custom color value indicator, a name, a unit and a value label.
 <script src="pathTo/vgauge.js"></script>
 ```
 ```javascript
-
-let gauge = new VGauge('gaugeContainer', settings);
+const gauge = new VGauge('gaugeContainer', settings);
 
 gauge.value = 15.8;
-
 ```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
+  <img alt="gauge with custom indicator color" height="200">  
+</picture>
 
 <details>
 <summary>settings initializer</summary>
@@ -296,12 +299,6 @@ const settings = {
 
 </details>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/custom_indicator_color_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/custom_indicator_color_light.svg">
-  <img alt="gauge with custom indicator color" height="200">  
-</picture>
-
 > [!NOTE]
 > The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color set for the underlying sector.
 > The underlying sector's opacity can be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
@@ -326,12 +323,16 @@ This is the intended style for the gauge, giving the user visual feedback (at a 
 <script src="pathTo/vgauge.js"></script>
 ```
 ```javascript
-
-let gauge = new VGauge('gaugeContainer', settings);
+const gauge = new VGauge('gaugeContainer', settings);
 
 gauge.value = 23.2;
-
 ```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg">
+  <img alt="gauge with custom indicator color" height="200">  
+</picture>
 
 <details>
 <summary>settings initializer</summary>
@@ -468,17 +469,28 @@ const settings = {
 
 </details>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="images/multi_light.svg">
-  <img alt="gauge with custom indicator color" height="200">  
-</picture>
-
 > [!NOTE]
 > The fill color used for labels is the color style of the container (currentColor) and the fill color used for the indicator is the color of the underlying sector that the current value corresponds to.
 > The underlying sectors opacity can each be adjusted to give the user a visual hint of the max range. Set the opacity to 0 if you want to hide the underlying sector completely.
 
 &nbsp;
+
+
+## Miscellaneous
+
+### cdn
+```html
+<script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge-1.0.0.min.js" 
+    integrity="sha256-Gt6MDAKMrD51dYmaJmLPxx+EnVtji+zI5/SzG4BIzhs=" 
+    crossorigin="anonymous">
+</script>
+```
+
+### add event handlers
+
+to make the gauge container focusable/selectable add tabindex="0" to the container div
+for bootstrap add form-control, mb-2 and mt-2 to class attribute.
+
 
 ***
 
