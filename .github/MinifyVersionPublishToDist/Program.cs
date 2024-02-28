@@ -32,7 +32,6 @@ namespace MinifyVersionPublishToDist
             {
                 Echo.WriteLine($"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}");
             }
-
         }
 
         public static class Error
@@ -41,7 +40,14 @@ namespace MinifyVersionPublishToDist
             {
                 Echo.WriteLine($"::error file={"Program.cs"},line={line},endLine={line},title={"error"}::{message}");
             }
+        }
 
+        public static class Notice
+        {
+            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
+            {
+                Echo.WriteLine($"::notice file={"Program.cs"},line={line},endLine={line},title={"notice"}::{message}");
+            }
         }
     }
 
@@ -51,16 +57,16 @@ namespace MinifyVersionPublishToDist
 
         static void Main(string[] args)
         {
+            Echo.Notice.WriteLine("Eagle?");
             Echo.Error.WriteLine("Apollo?");
             Echo.Debug.WriteLine("Houston?");
             Echo.Warning.WriteLine("Texas?");
 
-            string[] cmdargs = Environment.GetCommandLineArgs();
-            for (int i = 0; i < cmdargs.Length; i++)
+            //string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length; i++)
             {
-                Echo.Debug.WriteLine(cmdargs[i]);
+                Echo.Debug.WriteLine(args[i]);
             }
-
 
             string currentDirectory = Directory.GetCurrentDirectory();
             string[] files = Directory.GetFiles(currentDirectory);
@@ -70,10 +76,6 @@ namespace MinifyVersionPublishToDist
             {
                 Echo.Debug.WriteLine(file);
             }
-
-            //string houston = "Houston?";
-
-            //Console.WriteLine($"messageFromEagle={houston}");
 
 
             //var minifier = new Microsoft.Ajax.Utilities.Minifier();
