@@ -7,3 +7,6 @@
 /.github/MinifyVersionPublishToDist/obj
 /.github/MinifyVersionPublishToDist/.vs/MinifyVersionPublishToDist
 /.github/MinifyVersionPublishToDist/bin/Debug/net6.0
+/.github/MinifyVersionPublishToFolder/.vs
+/.github/MinifyVersionPublishToFolder/obj/Debug/net6.0
+/.github/MinifyVersionPublishToFolder/Properties/launchSettings.json
