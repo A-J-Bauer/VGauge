@@ -16,14 +16,14 @@ namespace MinifyVersionPublishToDist
 {
     public static class Echo
     {
-        public static void WriteLine(string? message)
+        public static void WriteLine(string message)
         {
             Console.WriteLine(message);
         }
 
         public static class Debug
         {
-            public static void WriteLine(string? message)
+            public static void WriteLine(string message)
             {
                 Echo.WriteLine($"::debug::{message}");
             }
@@ -31,7 +31,7 @@ namespace MinifyVersionPublishToDist
 
         public static class Warning
         {
-            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
+            public static void WriteLine(string message, [CallerLineNumber] int line = 0, [CallerMemberName] string caller = null)
             {
                 Echo.WriteLine($"::warning file={"Program.cs"},line={line},endLine={line},title={"warning"}::{message}");
             }
@@ -39,7 +39,7 @@ namespace MinifyVersionPublishToDist
 
         public static class Error
         {
-            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
+            public static void WriteLine(string message, [CallerLineNumber] int line = 0, [CallerMemberName] string caller = null)
             {
                 Echo.WriteLine($"::error file={"Program.cs"},line={line},endLine={line},title={"error"}::{message}");
             }
@@ -47,7 +47,7 @@ namespace MinifyVersionPublishToDist
 
         public static class Notice
         {
-            public static void WriteLine(string? message, [CallerLineNumber] int line = 0, [CallerMemberName] string? caller = null)
+            public static void WriteLine(string message, [CallerLineNumber] int line = 0, [CallerMemberName] string caller = null)
             {
                 Echo.WriteLine($"::notice file={"Program.cs"},line={line},endLine={line},title={"notice"}::{message}");
             }
@@ -120,7 +120,7 @@ namespace MinifyVersionPublishToDist
                     using (StreamReader streamReader = new StreamReader(filepath))
                     {
                         firstline = streamReader.ReadLine();
-                        string[] lineSplit = firstline!.Split(new string[] { "//", "," }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        string[] lineSplit = firstline.Split(new string[] { "//", "," }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
                         if (lineSplit.Length > 0)
                         {

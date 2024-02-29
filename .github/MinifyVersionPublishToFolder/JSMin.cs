@@ -47,8 +47,8 @@ namespace Ext.Net.Utilities
     {
         const int EOF = -1;
 
-        StreamReader? sr;
-        StreamWriter? sw;
+        StreamReader sr;
+        StreamWriter sw;
 
         int theA;
         int theB;
