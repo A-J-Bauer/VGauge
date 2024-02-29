@@ -175,7 +175,7 @@ namespace MinifyVersionPublishToDist
                         jsMin.Minify(streamReader, streamWriter);
                     }
 
-                    Echo.WriteLine($"::set-output name=namecheck_new_version_for_dist::yes");
+                    Echo.WriteLine("{namecheck_new_version_for_dist}={value} >> $GITHUB_ENV");
                 }
                 catch (Exception ex)
                 {
