@@ -17,4 +17,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
             name: min-file-path
-            path: dist/vgauge-1.0.2.js
+            path: ./dist/vgauge-1.0.3.js
