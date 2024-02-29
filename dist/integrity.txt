@@ -1,1 +1,2 @@
 vgauge-1.0.3.min.js" integrity="sha384-CHO+7z8zcSwLXXCTCa9fzKJqv5Koiu1opo6vcZNl/ByNUrkhRM8cuyBHiP0PKGQ4" crossorigin="anonymous"
+vgauge-1.0.4.min.js" integrity="sha384-lpX30Zwc+5WW3dXe6SrmqXdia1zEO8aiefHkdTEZbFu6Q/yMyN5XzeGgSL+X/7lV" crossorigin="anonymous"
