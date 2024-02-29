@@ -13,3 +13,7 @@ jobs:
         run: |
              echo "minify version publish to dist" 
              dotnet run --project .github/MinifyVersionPublishToFolder/MinifyVersionPublishToFolder.csproj vgauge.js dist
+      - uses: actions/upload-artifact@v4
+        with:
+            name: min-file-path
+            path: ${{ env.min_file_path }}
