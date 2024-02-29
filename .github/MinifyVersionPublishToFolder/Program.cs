@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
@@ -63,24 +64,30 @@ namespace MinifyVersionPublishToDist
             //Echo.Debug.WriteLine("Houston?");
             //Echo.Warning.WriteLine("Texas?");
 
+            //string[] files = Directory.GetFiles(currentDirectory);
+
             bool error = false;
 
             string currentDirectory = Directory.GetCurrentDirectory();
+
             string filepath = "";
             string filename = "";
             string version = "";
-            string? firstline = null;
-            string dirpath = args[1];
+            string firstline = "";
+            string dirpath = "";
+            string integrityfilepath = "";
             string filenameWithoutExtension = "";
             string minfilepath = "";
+            byte[] sha384HashBytes = { 0 };
+            string sha384hashBase64 = "";
+            string integrity = "";
 
-
-            //string[] files = Directory.GetFiles(currentDirectory);
 
             if (args.Length == 2)
             {
                 filepath = Path.Combine(currentDirectory, args[0]);
                 dirpath = Path.Combine(currentDirectory, args[1]);
+                integrityfilepath = Path.Combine(dirpath, "integrity.txt");
 
                 if (File.Exists(filepath))
                 {
@@ -91,19 +98,19 @@ namespace MinifyVersionPublishToDist
                     else
                     {
                         error = true;
-                        Echo.Error.WriteLine($"the specified folder '{dirpath}' was not found");
+                        Echo.Debug.WriteLine($"the specified folder '{dirpath}' was not found");
                     }
                 }
                 else
                 {
                     error = true;
-                    Echo.Error.WriteLine($"the specified file '{filename}' was not found");
+                    Echo.Debug.WriteLine($"the specified file '{filename}' was not found");
                 }
             }
             else
             {
                 error = true;
-                Echo.Error.WriteLine("Bad arguments");
+                Echo.Debug.WriteLine("Bad arguments");
             }
 
             if (!error)
@@ -129,43 +136,37 @@ namespace MinifyVersionPublishToDist
                                     if (File.Exists(minfilepath))
                                     {
                                         error = true;
-                                        Echo.Error.WriteLine("Minification failed, target min file already exists");
+                                        Echo.Debug.WriteLine("Minification failed, target min file already exists");
                                     }
                                 }
                                 else
                                 {
                                     error = true;
-                                    Echo.Debug.WriteLine($"First string after comment in first line of {filename} does not match the filename");
-                                    Echo.Error.WriteLine("Minification failed, first line of source file malformed");
+                                    Echo.Debug.WriteLine($"first line of source file malformed, first string after comment in first line of {filename} does not match the filename");
                                 }
                             }
                             else
                             {
                                 error = true;
-                                Echo.Debug.WriteLine("Could not find version in first line of source file");
-                                Echo.Error.WriteLine("first line of source file malformed");
+                                Echo.Debug.WriteLine("first line of source file malformed, could not find version in first line of source file");
                             }
                         }
                         else
                         {
                             error = true;
-                            Echo.Debug.WriteLine("The first line in the source file has to start with: // filename.js version e.g. // myfile.js 1.0.2 ");
-                            Echo.Error.WriteLine("Minification failed, first line of source file malformed");
+                            Echo.Debug.WriteLine("first line of source file malformed,  e.g. // myfile.js 1.0.2 ");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     error = true;
-                    Echo.Debug.WriteLine(ex.Message);
-                    Echo.Error.WriteLine("Minification failed, could not read first line of source file");
+                    Echo.Debug.WriteLine($"could not read first line of source file: {ex.Message}");
                 }
             }
 
             if (!error)
             {
-                Echo.Notice.WriteLine($"Minifying {filename}, version={version}");
-
                 try
                 {
                     var jsMin = new JSMin(firstline!);
@@ -178,9 +179,65 @@ namespace MinifyVersionPublishToDist
                 catch (Exception ex)
                 {
                     error = true;
-                    Echo.Debug.WriteLine(ex.Message);
-                    Echo.Error.WriteLine("JSMin minification failed");
+                    Echo.Debug.WriteLine($"JSMin minification failed: {ex.Message}");
                 }
+            }
+
+            if (!error)
+            {
+                try
+                {
+                    using (FileStream fileStream = new FileStream(minfilepath, FileMode.Open, FileAccess.Read))
+                    using (SHA384 sha384 = SHA384.Create())
+                    {
+                        sha384HashBytes = sha384.ComputeHash(fileStream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    error = true;
+                    Echo.Debug.WriteLine($"could not create sha384 hash of {args[0]}: {ex.Message}");
+                }
+            }
+
+            if (!error)
+            {
+                try
+                {
+                    sha384hashBase64 = Convert.ToBase64String(sha384HashBytes!); ;
+                    integrity = $"sha384-{sha384hashBase64}";
+                }
+                catch (Exception ex)
+                {
+                    error = true;
+                    Echo.Debug.WriteLine($"could not convert sha384 byte array to base64: {ex.Message}");
+                }
+            }
+
+            if (!error)
+            {
+                try
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(integrityfilepath, true))
+                    {
+                        //vgauge-1.0.0.min.js" integrity="sha384-    " crossorigin="anonymous"
+                        streamWriter.WriteLine($"{Path.GetFileName(minfilepath)}\" integrity=\"{integrity}\" crossorigin=\"anonymous\"");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    error = true;
+                    Echo.Debug.WriteLine($"could not create or append to {integrityfilepath}: {ex.Message}");
+                }
+            }
+
+            if (error)
+            {
+                Echo.Error.WriteLine("MinifyVersionPublishToFolder failed");
+            }
+            else
+            {
+                Echo.Notice.WriteLine($"Minified {filename}, version={version} to {args[1]}, added sha384 hash to {Path.GetFileName(integrityfilepath)}");
             }
 
             Environment.Exit(error ? 1 : 0);

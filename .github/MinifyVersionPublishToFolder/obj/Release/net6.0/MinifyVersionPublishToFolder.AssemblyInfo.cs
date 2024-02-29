@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MinifyVersionPublishToFolder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f35f62888999fd01038898004b2f4130c37e953c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+baaa3f35ee2bef13a8dd7c15f4640a7961338d7d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MinifyVersionPublishToFolder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MinifyVersionPublishToFolder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

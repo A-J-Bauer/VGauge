@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Parse file, read version, check if exists in dist, if not write file and minified version to dist
-        run: |
-             dotnet run --project .github/MinifyVersionPublishToFolder/MinifyVersionPublishToFolder.csproj vgauge.js dist
-      - name: add and commit
-        uses: EndBug/add-and-commit@v7
+        run: dotnet run --project .github/MinifyVersionPublishToFolder/MinifyVersionPublishToFolder.csproj vgauge.js dist
+ 
+      - name: add commit and push
+        uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
