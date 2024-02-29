@@ -50,7 +50,7 @@ gauge.value = 34.6;
 <details>
 <summary>settings JSON</summary>
 
-  ```javascript
+```javascript
    {
     "name": "Room 1",
     "unit": "°C",
@@ -58,17 +58,7 @@ gauge.value = 34.6;
     "max": 50,
     "startAngle": 90,
     "sweepAngle": 260,
-    "cluster": {
-        "innerRadius": 30,
-        "outerRadius": 40,
-        "sectors": [            
-            {
-                "fill": "#ffc107",
-                "opacity": 0.01,
-                "sweepTo": 50
-            }
-        ]
-    },
+    "useHelperGrid": true,
     "indicator": {
         "innerRadius": 32,
         "outerRadius": 40
@@ -111,6 +101,7 @@ const settings = {
     max: 50,
     startAngle: 90,
     sweepAngle: 260,
+    useHelperGrid: true,
     indicator:
     {
         innerRadius: 32,
@@ -183,25 +174,24 @@ gauge.value = 15.8;
 </picture>
 
 <details>
-<summary>settings initializer</summary>
+<summary>settings JSON</summary>
 
 ```javascript
-
-const settings = {
-    {
+{
     "name": "Room 1",
     "unit": "°C",
     "min": -20,
     "max": 50,
     "startAngle": 90,
     "sweepAngle": 260,
+    "useHelperGrid": true,
     "cluster": {
         "innerRadius": 30,
         "outerRadius": 40,
-        "sectors": [
+        "sectors": [           
             {
                 "fill": "#ffc107",
-                "opacity": 0.01,
+                "opacity": 0.02,
                 "sweepTo": 50
             }
         ]
@@ -234,22 +224,22 @@ const settings = {
         }
     }
 }
-};
 ```
 </details>
 
 <details>
 
-<summary>JSON</summary>
+<summary>settings initializer</summary>
 
 ```javascript
-   {
+const settings = {
     name: 'Room 1',
     unit: '°C',
     min: -20,
     max: 50,
     startAngle: 90,
     sweepAngle: 260,
+    useHelperGrid: true,
     cluster:
     {
         innerRadius: 30,
@@ -257,7 +247,7 @@ const settings = {
         sectors: [
             {
                 fill: '#ffc107',
-                opacity: 0.01,
+                opacity: 0.02,
                 sweepTo: 50
             }
         ]
@@ -294,7 +284,7 @@ const settings = {
             decimals: 1
         }
     }
-}
+};
 ```
 
 </details>
