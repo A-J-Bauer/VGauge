@@ -65,7 +65,8 @@ namespace MinifyVersionPublishToDist
 
             bool error = false;
 
-            string filepath = args[0];
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string filepath = "";
             string filename = "";
             string version = "";
             string? firstline = null;
@@ -73,11 +74,14 @@ namespace MinifyVersionPublishToDist
             string filenameWithoutExtension = "";
             string minfilepath = "";
 
-            //string currentDirectory = Directory.GetCurrentDirectory();
+
             //string[] files = Directory.GetFiles(currentDirectory);
 
             if (args.Length == 2)
             {
+                filepath = Path.Combine(currentDirectory, args[0]);
+                dirpath = Path.Combine(currentDirectory, args[1]);
+
                 if (File.Exists(filepath))
                 {
                     if (Directory.Exists(dirpath))
