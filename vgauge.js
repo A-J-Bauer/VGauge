@@ -1,4 +1,4 @@
-// VGauge 1.0.0, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
+// vgauge.js 1.0.1, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
 
 class VGauge {
     static isNonEmptyString(s) {
@@ -41,36 +41,39 @@ class VGauge {
         }
     }
 
+
     static _getObjectInitializer(obj, n, t, c) {
+        const ld = '\r\n';
+
         t = (t === undefined ? 0 : t);
         c = (c === undefined ? false : c);
 
-        let str = ' '.repeat(t) + '{\r\n';
+        let str = ' '.repeat(t) + '{' + ld;
         t += n;
 
         const last = Object.keys(obj).slice(-1)[0];
         for (const [key, value] of Object.entries(obj)) {
             if (obj.hasOwnProperty(key)) {
                 if (Array.isArray(value)) {
-                    str += ' '.repeat(t) + key + ': [\r\n';
+                    str += ' '.repeat(t) + key + ': [' + ld;
                     for (var i = 0; i < value.length; i++) {
-                        str += VGauge._getObjectInitializer(value[i], n, t + n, (i !== value.length - 1)) + '\r\n';
+                        str += VGauge._getObjectInitializer(value[i], n, t + n, (i !== value.length - 1)) + ld;
                     }
                     str += ' '.repeat(t) + ']';
                 }
                 else if (typeof value === 'object') {
-                    str += ' '.repeat(t) + key + ':\r\n' + VGauge._getObjectInitializer(value, n, t, key !== last) + (key !== last ? '\r\n' : '');
+                    str += ' '.repeat(t) + key + ':' + ld + VGauge._getObjectInitializer(value, n, t, key !== last) + (key !== last ? ld : '');
                 }
                 else if (typeof value === 'string') {
-                    str += ' '.repeat(t) + key + ': \'' + value + '\'' + (key === last ? '' : ',\r\n');
+                    str += ' '.repeat(t) + key + ': \'' + value + '\'' + (key === last ? '' : ',' + ld);
                 }
                 else {
-                    str += ' '.repeat(t) + key + ': ' + value + (key === last ? '' : ',\r\n');
+                    str += ' '.repeat(t) + key + ': ' + value + (key === last ? '' : ',' + ld);
                 }
             }
         }
 
-        str += '\r\n' + ' '.repeat(t - n) + '}' + (c ? ',' : '');
+        str += ld + ' '.repeat(t - n) + '}' + (c ? ',' : '');
 
         return str;
     }
@@ -203,7 +206,7 @@ class VGauge {
                     this._svg.append(this._svgElems.ticks);
                 }
             }
-            
+
             if (VGauge.isNonEmptyArray(this._settings.icons)) {
                 this._svgElems.icons = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 for (var i = 0; i < this._settings.icons.length; i++) {
@@ -377,10 +380,7 @@ class VGauge {
                     prevPoint2.x = this._settings.cluster.outerRadius * Math.cos(prevAngle);
                     prevPoint2.y = this._settings.cluster.outerRadius * Math.sin(prevAngle);
 
-                    angle = prevAngle + (sector.sweepTo - prevSweepTo)
-                        * this._settings.sweepAngle
-                        / (this._settings.max - this._settings.min)
-                        * Math.PI / 180.0;
+                    angle = prevAngle + (sector.sweepTo - prevSweepTo) * this._settings.sweepAngle / (this._settings.max - this._settings.min) * Math.PI / 180.0;
 
                     point1.x = this._settings.cluster.innerRadius * Math.cos(angle);
                     point1.y = this._settings.cluster.innerRadius * Math.sin(angle);
@@ -459,10 +459,7 @@ class VGauge {
 
     _update() {
         const prevAngle = this._settings.startAngle * Math.PI / 180.0;
-        let angle = this._settings.startAngle * Math.PI / 180.0 + (this._value - this._settings.min)
-            * this._settings.sweepAngle
-            / (this._settings.max - this._settings.min)
-            * Math.PI / 180.0;
+        let angle = this._settings.startAngle * Math.PI / 180.0 + (this._value - this._settings.min) * this._settings.sweepAngle / (this._settings.max - this._settings.min) * Math.PI / 180.0;
 
         const prevPoint1 = {
             x: this._settings.indicator.innerRadius * Math.cos(prevAngle),
@@ -515,10 +512,7 @@ class VGauge {
         if (this._settings.targetValue) {
             const tipPoint = { x: 0, y: 0 };
 
-            angle = this._settings.startAngle * Math.PI / 180.0 + (this._targetValue - this._settings.min)
-                * this._settings.sweepAngle
-                / (this._settings.max - this._settings.min)
-                * Math.PI / 180.0;
+            angle = this._settings.startAngle * Math.PI / 180.0 + (this._targetValue - this._settings.min) * this._settings.sweepAngle / (this._settings.max - this._settings.min) * Math.PI / 180.0;
 
             tipPoint.x = this._settings.targetValue.indicator.radius * Math.cos(angle);
             tipPoint.y = this._settings.targetValue.indicator.radius * Math.sin(angle);
