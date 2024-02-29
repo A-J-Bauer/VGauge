@@ -469,12 +469,8 @@ const settings = {
 ## Miscellaneous
 
 ### cdn
-```html
-<script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge-1.0.0.min.js" 
-    integrity="sha256-Gt6MDAKMrD51dYmaJmLPxx+EnVtji+zI5/SzG4BIzhs=" 
-    crossorigin="anonymous">
-</script>
-```
+
+you can find minified files and integrity values in the dist folder
 
 ### add event handlers
 
