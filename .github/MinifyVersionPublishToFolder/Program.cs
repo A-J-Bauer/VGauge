@@ -175,7 +175,7 @@ namespace MinifyVersionPublishToDist
                         jsMin.Minify(streamReader, streamWriter);
                     }
 
-                    Echo.WriteLine($"::exportVariable min_file_path={minfilepath}");
+                    Echo.WriteLine($"::exportVariable check_new_version_for_dist=yes");
                 }
                 catch (Exception ex)
                 {
