@@ -40,14 +40,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-            echo "::notice file=dotnet.yml::Creating release $VERSION"
+            zip -r dist.zip ./dist/*
             gh release create "$VERSION" \
+                dist.zip
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
-            zip -r dist.zip ./dist/*
-            gh release upload "$VERSION" dist.zip
-                
-            
-               
-                
+            echo "::notice file=dotnet.yml::Created release $VERSION"
