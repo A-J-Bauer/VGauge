@@ -52,6 +52,17 @@ namespace MinifyVersionPublishToDist
                 Echo.WriteLine($"::notice file={"Program.cs"},line={line},endLine={line},title={"notice"}::{message}");
             }
         }
+
+        public static class GitHubOutput
+        {
+            public static void Append(string key, string value)
+            {
+                var outputFile = Environment.GetEnvironmentVariable("GITHUB_OUTPUT");
+                string outputContent = File.ReadAllText(outputFile);
+                outputContent += "\n" + $"{key}={value}";
+                File.WriteAllText(outputFile, outputContent);
+            }
+        }
     }
 
     class Program
@@ -252,8 +263,7 @@ namespace MinifyVersionPublishToDist
             }
             else
             {
-                var githubOutput = Environment.GetEnvironmentVariable("GITHUB_OUTPUT") + "\n" + $"version={version}";
-                Environment.SetEnvironmentVariable("GITHUB_OUTPUT", githubOutput);
+                Echo.GitHubOutput.Append("version", version);
                 Echo.Notice.WriteLine($"Minified {filename}, version={version} to {args[1]}, added sha384 hash to {Path.GetFileName(integrityfilepath)}");
             }
 
