@@ -78,6 +78,7 @@ namespace MinifyVersionPublishToDist
             string integrityfilepath = "";
             string filenameWithoutExtension = "";
             string minfilepath = "";
+            string unminfilepath = "";
             byte[] sha384HashBytes = { 0 };
             string sha384hashBase64 = "";
             string integrity = "";
@@ -132,6 +133,7 @@ namespace MinifyVersionPublishToDist
                                     version = versionSplit[1];
                                     filenameWithoutExtension = Path.GetFileNameWithoutExtension(filepath);
                                     minfilepath = Path.Combine(dirpath, filenameWithoutExtension + "-" + version + ".min.js");
+                                    unminfilepath = Path.Combine(dirpath, filenameWithoutExtension + "-" + version + ".js");
 
                                     if (File.Exists(minfilepath))
                                     {
@@ -162,6 +164,19 @@ namespace MinifyVersionPublishToDist
                 {
                     error = true;
                     Echo.Debug.WriteLine($"could not read first line of source file: {ex.Message}");
+                }
+            }
+
+            if (!error)
+            {
+                try
+                {
+                    File.Copy(filepath, unminfilepath, true);
+                }
+                catch (Exception ex)
+                {
+                    error = true;
+                    Echo.Debug.WriteLine($"could not create version named copy: {ex.Message}");
                 }
             }
 
@@ -238,6 +253,7 @@ namespace MinifyVersionPublishToDist
             else
             {
                 Echo.Notice.WriteLine($"Minified {filename}, version={version} to {args[1]}, added sha384 hash to {Path.GetFileName(integrityfilepath)}");
+                Environment.SetEnvironmentVariable("GITHUB_OUTPUT", "4711");
             }
 
             Environment.Exit(error ? 1 : 0);
