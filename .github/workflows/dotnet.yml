@@ -46,21 +46,3 @@ jobs:
                 --generate-notes
             gh release upload "$VERSION" dist.zip
             echo "::notice file=dotnet.yml::Created release $VERSION"
-
-  clean:
-    runs-on: ubuntu-latest
-    needs: [publish, release]
-    steps: 
-      - id: step1
-        name: Checkout
-        uses: actions/checkout@v4
-
-      - id: step2
-        name: Delete default assets
-        env:
-          VERSION: ${{needs.publish.outputs.version}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            gh release delete-asset "$VERSION" "${VERSION}.zip#Source code (zip)" -y
-            gh release delete-asset "$VERSION" "${VERSION}.tar.gz#Source code (tar.gz)" -y
-            echo "::notice file=dotnet.yml::Cleaned release $VERSION"
