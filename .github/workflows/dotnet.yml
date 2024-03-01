@@ -40,10 +40,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-            zip -r dist.zip ./dist/*
+            zip -r ${VERSION}.zip ./dist/*
             gh release create "$VERSION" \
-                dist.zip
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
+            gh release upload "$VERSION" dist.zip
+            gh release delete-asset "$VERSION" ${VERSION}.tar.gz
             echo "::notice file=dotnet.yml::Created release $VERSION"
+            
