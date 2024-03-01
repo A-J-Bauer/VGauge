@@ -1,4 +1,4 @@
-// vgauge.js 1.0.5, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
+// vgauge.js 1.0.6, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
 
 class VGauge {
     static isNonEmptyString(s) {

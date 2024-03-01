@@ -252,7 +252,7 @@ namespace MinifyVersionPublishToDist
             }
             else
             {
-                Environment.SetEnvironmentVariable("$GITHUB_OUTPUT", $"version={version}");
+                Environment.SetEnvironmentVariable("GITHUB_OUTPUT", $"version={version}");
                 Echo.Notice.WriteLine($"Minified {filename}, version={version} to {args[1]}, added sha384 hash to {Path.GetFileName(integrityfilepath)}");
             }
 
