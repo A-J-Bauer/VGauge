@@ -52,6 +52,10 @@ jobs:
     needs: [publish, release]
     steps: 
       - id: step1
+        name: Checkout
+        uses: actions/checkout@v4
+
+      - id: step2
         name: Delete default assets
         env:
           VERSION: ${{needs.publish.outputs.version}}
