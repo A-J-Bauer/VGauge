@@ -30,6 +30,10 @@ jobs:
     needs: publish
     steps:  
       - id: step1
+        name: Checkout
+        uses: actions/checkout@v4
+
+      - id: step2
         name: Create release
         env:
           VERSION: ${{needs.publish.outputs.version}}
@@ -41,7 +45,7 @@ jobs:
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
-            zip -r dist.zip ./dist
+            zip -r dist.zip ./dist/*
             gh release upload "$VERSION" dist.zip
                 
             
