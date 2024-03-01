@@ -8,3 +8,4 @@ vgauge-1.0.9.min.js" integrity="sha384-Aq4el7Y4XUxzhmo85GrmAFn5MO/4YH/I8AfKoWxFr
 vgauge-1.0.10.min.js" integrity="sha384-IojicD6M5I7TZw1y1jAj2iWg8OV5CfRaivj3L0ubnHLT7ODGPYfV5LEIpldToQdZ" crossorigin="anonymous"
 vgauge-1.0.11.min.js" integrity="sha384-nu51Gm4E9lBtOmGIld7qy0hUfYXFo+aflymIv7CXLoBHh2/ZTWxrzHAF9h1c8jGf" crossorigin="anonymous"
 vgauge-1.0.12.min.js" integrity="sha384-5+0r88hWv9ZXzvcHa99ubTW3HAS/W+Mi9/qYSSoBL6VE1BGv0/Ioz+eZ/b5eERWo" crossorigin="anonymous"
+vgauge-1.0.13.min.js" integrity="sha384-aB7ryspPtMLf3JsEZ85Ce+q+bDPoK/XEObxNU9K2nM72Sop2Rcrpn3S28YsZpkyO" crossorigin="anonymous"
