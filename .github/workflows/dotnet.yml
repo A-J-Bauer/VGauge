@@ -38,10 +38,12 @@ jobs:
         run: |
             echo "::notice file=dotnet.yml::Creating release $VERSION"
             gh release create "$VERSION" \
-                dist/integrity.txt
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
+            zip -r dist.zip ./dist
+            gh release upload "$VERSION" dist.zip
+                
             
                
                 
