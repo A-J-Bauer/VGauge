@@ -37,8 +37,6 @@ jobs:
         name: Create release
         env:
           VERSION: ${{needs.publish.outputs.version}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
         run: |
             zip -r dist.zip ./dist/*
             gh release create "$VERSION" \
@@ -46,7 +44,14 @@ jobs:
                 --title="${VERSION}" \
                 --generate-notes
             gh release upload "$VERSION" dist.zip
-            gh release delete-asset "$VERSION" "${VERSION}.tar.gz"
-            gh release delete-asset "$VERSION" "${VERSION}.zip"
+
+      - id: step3
+        name: Delete default assets
+        env:
+          VERSION: ${{needs.publish.outputs.version}}
+        run: |
+            gh release delete-asset "$VERSION" "${VERSION}.zip" -y
+            gh release delete-asset "$VERSION" "${VERSION}.tar.gz" -y
             echo "::notice file=dotnet.yml::Created release $VERSION"
+
             
