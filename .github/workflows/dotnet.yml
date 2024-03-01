@@ -45,8 +45,13 @@ jobs:
                 --title="${VERSION}" \
                 --generate-notes
             gh release upload "$VERSION" dist.zip
+            echo "::notice file=dotnet.yml::Created release $VERSION"
 
-      - id: step3
+  clean:
+    runs-on: ubuntu-latest
+    needs: release
+    steps: 
+      - id: step1
         name: Delete default assets
         env:
           VERSION: ${{needs.publish.outputs.version}}
@@ -54,6 +59,4 @@ jobs:
         run: |
             gh release delete-asset "$VERSION" "${VERSION}.zip" -y
             gh release delete-asset "$VERSION" "${VERSION}.tar.gz" -y
-            echo "::notice file=dotnet.yml::Created release $VERSION"
-
-            
+            echo "::notice file=dotnet.yml::Cleaned release $VERSION"
