@@ -21,3 +21,4 @@ vgauge-1.0.22.min.js" integrity="sha384-mYGMFuEDZ9IlfoWPfl3DOy+HsVqINXME2RVqg14E
 vgauge-1.0.23.min.js" integrity="sha384-CqNqjenla5zIdUNqO+6UnM117AVqXBEniJisdhaXaksYCM9QpeVaeWxek3mbJUJN" crossorigin="anonymous"
 vgauge-1.0.24.min.js" integrity="sha384-hmbJ5n07o9/zQKqkQ8QntnHP02d9XQrLmbyglN++N79JnSJBQ8W0bylsIuVdWUWT" crossorigin="anonymous"
 vgauge-1.0.25.min.js" integrity="sha384-Bez8DAeSzczY5F7lk7eD6fRhMbvrBfPjyCQLpVh5dgy8gIJvBPML/d1P/eFPJ7cg" crossorigin="anonymous"
+vgauge-1.0.26.min.js" integrity="sha384-RgUNha22fbArncze5eLMlmNcuwjmaihOP1wcGnTJIx5Ucmui2sXSr2c3U41RETpS" crossorigin="anonymous"
