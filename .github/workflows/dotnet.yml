@@ -37,6 +37,7 @@ jobs:
         name: Create release
         env:
           VERSION: ${{needs.publish.outputs.version}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             zip -r dist.zip ./dist/*
             gh release create "$VERSION" \
@@ -49,6 +50,7 @@ jobs:
         name: Delete default assets
         env:
           VERSION: ${{needs.publish.outputs.version}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             gh release delete-asset "$VERSION" "${VERSION}.zip" -y
             gh release delete-asset "$VERSION" "${VERSION}.tar.gz" -y
