@@ -37,9 +37,11 @@ jobs:
           tag: ${{ github.ref_name }}
         run: |
             echo "::notice file=dotnet.yml::Creating release $VERSION"
-            # echo "$VERSION"
             gh release create "$VERSION" \
-                ./dist/integrity.txt
+                dist/integrity.txt
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
+            
+               
+                
