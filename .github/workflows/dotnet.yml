@@ -45,7 +45,7 @@ jobs:
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
-            gh release upload "$VERSION" dist.zip
+            gh release upload "$VERSION" ${VERSION}.zip
             gh release delete-asset "$VERSION" ${VERSION}.tar.gz
             echo "::notice file=dotnet.yml::Created release $VERSION"
             
