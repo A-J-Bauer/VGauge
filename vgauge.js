@@ -634,4 +634,4 @@ class VGauge {
             icon.setAttribute('opacity', opacity);
         }
     }
-}  
+}
