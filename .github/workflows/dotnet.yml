@@ -61,6 +61,6 @@ jobs:
           VERSION: ${{needs.publish.outputs.version}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            gh release delete-asset "$VERSION" "${VERSION}.zip" -y
-            gh release delete-asset "$VERSION" "${VERSION}.tar.gz" -y
+            gh release delete-asset "$VERSION" "${VERSION}.zip#Source code" -y
+            gh release delete-asset "$VERSION" "${VERSION}.tar.gz#Source code" -y
             echo "::notice file=dotnet.yml::Cleaned release $VERSION"
