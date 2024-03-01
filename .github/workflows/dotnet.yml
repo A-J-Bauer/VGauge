@@ -39,10 +39,8 @@ jobs:
           VERSION: ${{needs.publish.outputs.version}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            zip -r dist.zip ./dist/*
             gh release create "$VERSION" \
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${VERSION}" \
                 --generate-notes
-            gh release upload "$VERSION" dist.zip
             echo "::notice file=dotnet.yml::Created release $VERSION"
