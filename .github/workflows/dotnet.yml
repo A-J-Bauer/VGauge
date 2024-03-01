@@ -38,7 +38,7 @@ jobs:
             echo "::notice file=dotnet.yml::Creating release $VERSION"
             # echo "$VERSION"
             gh release create "$VERSION" \
-                './dist/*' \
+                "dist/*#dist folder" \
                 --repo="$GITHUB_REPOSITORY" \
                 --title="${GITHUB_REPOSITORY} ${VERSION}" \
                 --generate-notes
