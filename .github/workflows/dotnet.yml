@@ -35,8 +35,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-            echo ${{needs.publish.outputs.version}}
-          # gh release create "$tag" \
-          #     --repo="$GITHUB_REPOSITORY" \
-          #     --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
-          #     --generate-notes
+            echo "::notice file=dotnet.yml::Creating release $VERSION"
+            # echo "$VERSION"
+            gh release create "$VERSION" \
+                './dist/*' \
+                --repo="$GITHUB_REPOSITORY" \
+                --title="${GITHUB_REPOSITORY} ${VERSION}" \
+                --generate-notes
+                --latest
