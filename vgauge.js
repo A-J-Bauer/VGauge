@@ -1,4 +1,4 @@
-// vgauge.js 1.0.5, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
+// vgauge.js 1.0.6, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
 
 class VGauge {
     static isNonEmptyString(s) {
@@ -569,11 +569,11 @@ class VGauge {
 
     set value(value) {
         if (this._value !== value) {
-            if (value < this._min) {
-                this._value = this._min;
+            if (value < this._settings.min) {
+                this._value = this._settings.min;
             }
-            else if (value > this._max) {
-                this._value = this._max;
+            else if (value > this._settings.max) {
+                this._value = this._settings.max;
             }
             else {
                 this._value = parseFloat(value);
