@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/css/open-sans.min.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge-1.0.4.min.js" integrity="sha384-lpX30Zwc+5WW3dXe6SrmqXdia1zEO8aiefHkdTEZbFu6Q/yMyN5XzeGgSL+X/7lV" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/a-j-bauer/vgauge/dist/vgauge-1.1.0.min.js" crossorigin="anonymous"></script>
 
     <style>
         html, body {
@@ -235,55 +235,115 @@
             const bootstrapFireIcon = `<path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>`
 
             const settings = {
-                name: 'Room 1',
-                unit: '°C',
                 min: -20,
                 max: 50,
                 startAngle: 90,
                 sweepAngle: 260,
                 useHelperGrid: true,
-                cluster: {
+                fontFamily: '',
+                backgroundColor: '',
+                cluster:
+                {
                     innerRadius: 30,
                     outerRadius: 40,
                     useTickLabels: true,
                     sectors: [
-                        { fill: bootStrapColorYellow, opacity: 0.1, sweepTo: -5 },
-                        { fill: bootStrapColorBlue, opacity: 0.1, sweepTo: 20 },
-                        { fill: bootStrapColorGreen, opacity: 0.1, sweepTo: 30 },
-                        { fill: bootStrapColorRed, opacity: 0.1, sweepTo: 50 }
+                        {
+                            fill: bootStrapColorYellow,
+                            opacity: 0.1,
+                            sweepTo: -5,
+                            useAsValueColor: true,
+                            useAsIndicatorColor: true,
+                        },
+                        {
+                            fill: bootStrapColorBlue,
+                            opacity: 0.1,
+                            sweepTo: 15,
+                            useAsValueColor: true,
+                            useAsIndicatorColor: true,
+                        },
+                        {
+                            fill: bootStrapColorGreen,
+                            opacity: 0.1,
+                            sweepTo: 30,
+                            useAsValueColor: true,
+                            useAsIndicatorColor: true,
+                        },
+                        {
+                            fill: bootStrapColorRed,
+                            opacity: 0.1,
+                            sweepTo: 50,
+                            useAsValueColor: true,
+                            useAsIndicatorColor: true,
+                        }
                     ]
                 },
-                indicator: {
+                value:
+                {
+                    x: 40,
+                    y: 20,
+                    fill: '',
+                    fontSize: '1rem',
+                    decimals: 1
+                },
+                indicator:
+                {
+                    fill: '',
                     innerRadius: 32,
                     outerRadius: 40
                 },
-                targetValue: {
+                targetValue:
+                {
                     min: 10,
                     max: 40,
-                    indicator: {
+                    indicator:
+                    {
                         radius: 35,
                         path: '<path d="M 0,0 L -4,6 L 4,6 Z"></path>',
                         fill: ''
                     },
-                    label: {
+                    label:
+                    {
                         radius: 44.5,
                         fontSize: '6px',
                         fill: ''
                     }
                 },
-                tweek: {
-                    fontFamily: '',
-                    backgroundColor: '',
-                    name: { x: 0, y: -10, fill: '', fontSize: '7px' },
-                    unit: { x: 2, y: 39, fill: '', fontSize: '11px' },
-                    value: { x: 40, y: 20, fill: '', fontSize: '1rem', decimals: 1 },
-                    ticks: { radius: 44, fontSize: '8px', fill: '#7f7f7f', opacity: 0.1 },
+                name:
+                {
+                    text: roomName,
+                    x: 0,
+                    y: -10,
+                    fill: '',
+                    fontSize: '7px'
                 },
-                icons: [{ id: 1, x: 34, y: -45, scale: 1, fill: '', opacity: 1.0, path: bootstrapFireIcon }]
+                unit:
+                {
+                    text: '°C',
+                    x: 2,
+                    y: 39,
+                    fill: '',
+                    fontSize: '11px'
+                },
+                ticks:
+                {
+                    radius: 44,
+                    fontSize: '8px',
+                    fill: '#7f7f7f',
+                    opacity: 0.1
+                },
+                icons: [
+                    {
+                        id: 1,
+                        x: 32,
+                        y: -45,
+                        scale: 1,
+                        fill: '',
+                        opacity: 1,
+                        path: '<path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>'
+                    }
+                ]
             };
-
-
-
 
             const gaugeStartStopToggle = document.querySelector('#gaugeStartStopToggle');
             const gaugeRecreateBtn = document.querySelector('#gaugeRecreateBtn');

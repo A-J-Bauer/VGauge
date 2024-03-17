@@ -1,18 +1,6 @@
-// vgauge.js 1.0.6, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
+// vgauge.js 1.1.0, copyright (c) 2024 A.J.Bauer, licensed under the MIT License,see LICENSE.txt for full license text.
 
 class VGauge {
-    static isNonEmptyString(s) {
-        return typeof s === 'string' && s !== '';
-    }
-
-    static isInteger(n) {
-        return Number.isInteger(parseInt(n));
-    }
-
-    static isBoolean(b) {
-        return typeof b === 'boolean';
-    }
-
     static isNonEmptyArray(a) {
         return Array.isArray(a) && a.length > 0;
     }
@@ -40,7 +28,6 @@ class VGauge {
             console.error(this.constructor.name + ': unsupported color');
         }
     }
-
 
     static _getObjectInitializer(obj, n, t, c) {
         const ld = '\r\n';
@@ -83,9 +70,10 @@ class VGauge {
         return VGauge._getObjectInitializer(obj, n);
     }
 
-    constructor(containerId, settings) {
+    constructor(groupId, settings) {
         this._initialized = false;
-        this._id = containerId;
+        this._id = groupId;
+        this._group = null;
         this._settings = settings;
 
         this._value = 0.0;
@@ -93,11 +81,9 @@ class VGauge {
 
         this._rootStyles = null;
         this._bodyStyles = null;
-        this._containerStyles = null;
-        this._container = null;
+        this._groupStyles = null;
 
-        this._svg = null;
-        this._svgElems = {
+        this._groupElems = {
             background: null,
             helperGrid: null,
             labels: null,
@@ -107,7 +93,7 @@ class VGauge {
             cluster: null,
             ticks: null,
             icons: null,
-            valueSector: null,
+            indicator: null,
             targetValue: null,
             targetValueIndicator: null
         };
@@ -120,9 +106,6 @@ class VGauge {
         this._fontFamily = '';
         this._currentColor = null;
 
-        this._width = 0;
-        this._height = 0;
-
         this.recreate();
     }
 
@@ -133,82 +116,71 @@ class VGauge {
             console.error(this.constructor.name + ': settings needed');
         }
 
-        this._container = document.querySelector('#' + this._id);
+        this._group = document.querySelector('#' + this._id);
+        this._group.innerHTML = '';
 
-        if (this._container) {
-
-            this._container.innerHTML = '';
-
-            this._width = this._height = this._container.clientWidth;
-
+        if (this._group) {
             this._rootStyles = getComputedStyle(document.documentElement);
             this._bodyStyles = window.getComputedStyle(document.body);
-            this._containerStyles = window.getComputedStyle(this._container);
+            this._groupStyles = window.getComputedStyle(this._group);
 
-            this._fontFamily = VGauge.isNonEmptyString(this._settings.tweek.fontFamily)
-                ? this._settings.tweek.fontFamily : this._bodyStyles.fontFamily.replace(/"/g, '');
+            this._fontFamily = this._settings.fontFamily !== '' ? this._settings.fontFamily : this._bodyStyles.fontFamily.replace(/"/g, '');
+            this._currentColor = this._groupStyles.color;
 
-            this._currentColor = this._containerStyles.color;
+            this._groupElems.background = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            this._groupElems.background.setAttribute('x', '-50');
+            this._groupElems.background.setAttribute('y', '-50');
+            this._groupElems.background.setAttribute('width', '100');
+            this._groupElems.background.setAttribute('height', '100');
+            this._groupElems.background.setAttribute('stroke', 'none');
+            this._groupElems.background.setAttribute('fill', 'none');
+            this._group.append(this._groupElems.background);
 
-            this._svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-            this._svg.setAttribute('viewBox', '-50 -50 100 100');
-            //this._svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-
-            this._svgElems.background = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-            this._svgElems.background.setAttribute('x', '-50');
-            this._svgElems.background.setAttribute('y', '-50');
-            this._svgElems.background.setAttribute('width', '100');
-            this._svgElems.background.setAttribute('height', '100');
-            this._svgElems.background.setAttribute('stroke', 'none');
-            this._svgElems.background.setAttribute('fill', 'none');
-            this._svg.append(this._svgElems.background);
-
-            if (VGauge.isBoolean(this._settings.useHelperGrid) && this._settings.useHelperGrid) {
-                this._svgElems.helperGrid = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                this._svgElems.helperGrid.setAttribute('opacity', '0');
-                this._svgElems.helperGrid.setAttribute('stroke', 'currentColor');
-                this._svgElems.helperGrid.setAttribute('stroke-width', '0.05');
-                this._svg.append(this._svgElems.helperGrid);
+            if (this._settings.useHelperGrid) {
+                this._groupElems.helperGrid = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                this._groupElems.helperGrid.setAttribute('opacity', '0');
+                this._groupElems.helperGrid.setAttribute('stroke', 'currentColor');
+                this._groupElems.helperGrid.setAttribute('stroke-width', '0.05');
+                this._group.append(this._groupElems.helperGrid);
             }
 
-            this._svgElems.labels = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            this._svgElems.labels.setAttribute('font-family', this._fontFamily);
+            this._groupElems.labels = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            this._groupElems.labels.setAttribute('font-family', this._fontFamily);
 
-            this._svgElems.name = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            this._svgElems.name.setAttribute('text-anchor', 'middle');
-            this._svgElems.labels.append(this._svgElems.name);
+            this._groupElems.name = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            this._groupElems.name.setAttribute('text-anchor', 'middle');
+            this._groupElems.labels.append(this._groupElems.name);
 
-            this._svgElems.unit = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            this._svgElems.unit.setAttribute('text-anchor', 'start');
-            this._svgElems.labels.append(this._svgElems.unit);
+            this._groupElems.unit = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            this._groupElems.unit.setAttribute('text-anchor', 'start');
+            this._groupElems.labels.append(this._groupElems.unit);
 
-            this._svgElems.value = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            this._svgElems.value.setAttribute('text-anchor', 'end');
-            this._svgElems.value.innerHTML = this._value.toFixed(this._settings.tweek.value.decimals);
-            this._svgElems.labels.append(this._svgElems.value);
+            this._groupElems.value = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            this._groupElems.value.setAttribute('text-anchor', (this._settings.value.decimals === 0 ? 'middle' : 'end'));
+            this._groupElems.value.innerHTML = this._value.toFixed(this._settings.value.decimals);
+            this._groupElems.labels.append(this._groupElems.value);
 
-            this._svg.append(this._svgElems.labels);
+            this._group.append(this._groupElems.labels);
 
             if (this._settings.cluster) {
-                this._svgElems.cluster = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                this._groupElems.cluster = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 if (VGauge.isNonEmptyArray(this._settings.cluster.sectors)) {
                     for (let i = 0; i < this._settings.cluster.sectors.length; i++) {
                         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                         path.setAttribute('d', 'M 0,0');
-                        this._svgElems.cluster.append(path);
+                        this._groupElems.cluster.append(path);
                     }
                 }
-                this._svg.append(this._svgElems.cluster);
+                this._group.append(this._groupElems.cluster);
 
                 if (this._settings.cluster.useTickLabels) {
-                    this._svgElems.ticks = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                    this._svg.append(this._svgElems.ticks);
+                    this._groupElems.ticks = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    this._group.append(this._groupElems.ticks);
                 }
             }
 
             if (VGauge.isNonEmptyArray(this._settings.icons)) {
-                this._svgElems.icons = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                this._groupElems.icons = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 for (var i = 0; i < this._settings.icons.length; i++) {
                     try {
                         const iconSettings = this._settings.icons[i];
@@ -220,42 +192,40 @@ class VGauge {
                         const d = (new DOMParser).parseFromString(iconSettings.path, "image/svg+xml").querySelector('[d]').getAttribute('d');
                         icon.setAttribute('d', d);
                         icon.setAttribute('opacity', iconSettings.opacity);
-                        if (VGauge.isNonEmptyString(iconSettings.fill)) {
+                        if (iconSettings.fill !== '') {
                             icon.setAttribute('fill', iconSettings.fill);
                         } else {
                             icon.setAttribute('fill', 'currentColor');
                         }
-                        this._svgElems.icons.append(icon);
+                        this._groupElems.icons.append(icon);
 
                     } catch (e) {
                         console.error(this.constructor.name + ': icons error : ' + error);
                     }
                 }
-                this._svg.append(this._svgElems.icons);
+                this._group.append(this._groupElems.icons);
             }
 
-            this._svgElems.valueSector = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            this._svg.append(this._svgElems.valueSector);
+            this._groupElems.indicator = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            this._group.append(this._groupElems.indicator);
 
             if (this._settings.targetValue) {
-                this._svgElems.targetValueIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                this._svg.append(this._svgElems.targetValueIndicator);
+                this._groupElems.targetValueIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                this._group.append(this._groupElems.targetValueIndicator);
 
-                this._svgElems.targetValueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                this._svg.append(this._svgElems.targetValueLabel);
+                this._groupElems.targetValueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                this._group.append(this._groupElems.targetValueLabel);
             }
 
-            this._container.prepend(this._svg);
+            this._group.setAttribute('style', 'user-select:none');
 
-            this._svg.setAttribute('style', 'user-select:none');
-
-            if (VGauge.isNonEmptyString(this._settings.tweek.backgroundColor)) {
-                this._svgElems.background.setAttribute('fill', VGauge.hexRgbForColor(this._settings.tweek.backgroundColor));
+            if (this._settings.backgroundColor !== '') {
+                this._groupElems.background.setAttribute('fill', VGauge.hexRgbForColor(this._settings.backgroundColor));
             } else {
-                this._svgElems.background.setAttribute('fill', 'none');
+                this._groupElems.background.setAttribute('fill', 'none');
             }
 
-            if (VGauge.isBoolean(this._settings.useHelperGrid) && this._settings.useHelperGrid) {
+            if (this._settings.useHelperGrid) {
                 for (let i = -50; i <= 50; i += 10) {
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     line.setAttribute('x1', i);
@@ -265,7 +235,7 @@ class VGauge {
                     if (i === 0) {
                         line.setAttribute('stroke-width', '0.1');
                     }
-                    this._svgElems.helperGrid.append(line);
+                    this._groupElems.helperGrid.append(line);
                 }
 
                 for (let i = -50; i <= 50; i += 10) {
@@ -277,39 +247,40 @@ class VGauge {
                     if (i === 0) {
                         line.setAttribute('stroke-width', '0.1');
                     }
-                    this._svgElems.helperGrid.append(line);
+                    this._groupElems.helperGrid.append(line);
                 }
             }
 
-            this._svgElems.name.setAttribute('x', this._settings.tweek.name.x);
-            this._svgElems.name.setAttribute('y', this._settings.tweek.name.y);
-            if (VGauge.isNonEmptyString(this._settings.tweek.name.fill)) {
-                this._svgElems.name.setAttribute('fill', this._settings.tweek.name.fill);
+            this._groupElems.name.setAttribute('x', this._settings.name.x);
+            this._groupElems.name.setAttribute('y', this._settings.name.y);
+            if (this._settings.name.fill !== '') {
+                this._groupElems.name.setAttribute('fill', this._settings.name.fill);
             } else {
-                this._svgElems.name.setAttribute('fill', 'currentColor');
+                this._groupElems.name.setAttribute('fill', 'currentColor');
             }
-            this._svgElems.name.setAttribute('font-size', this._settings.tweek.name.fontSize);
-            this._svgElems.name.innerHTML = this._settings.name;
+            this._groupElems.name.setAttribute('font-size', this._settings.name.fontSize);
+            this._groupElems.name.innerHTML = this._settings.name.text;
 
-            this._svgElems.unit.setAttribute('x', this._settings.tweek.unit.x);
-            this._svgElems.unit.setAttribute('y', this._settings.tweek.unit.y);
-            if (VGauge.isNonEmptyString(this._settings.tweek.unit.fill)) {
-                this._svgElems.unit.setAttribute('fill', this._settings.tweek.unit.fill);
+            this._groupElems.unit.setAttribute('x', this._settings.unit.x);
+            this._groupElems.unit.setAttribute('y', this._settings.unit.y);
+            if (this._settings.unit.fill !== '') {
+                this._groupElems.unit.setAttribute('fill', this._settings.unit.fill);
             } else {
-                this._svgElems.unit.setAttribute('fill', 'currentColor');
+                this._groupElems.unit.setAttribute('fill', 'currentColor');
             }
-            this._svgElems.unit.setAttribute('font-size', this._settings.tweek.unit.fontSize);
-            this._svgElems.unit.innerHTML = this._settings.unit;
+            this._groupElems.unit.setAttribute('font-size', this._settings.unit.fontSize);
+            this._groupElems.unit.innerHTML = this._settings.unit.text;
 
-            this._svgElems.value.setAttribute('x', this._settings.tweek.value.x);
-            this._svgElems.value.setAttribute('y', this._settings.tweek.value.y);
-            this._svgElems.value.setAttribute('fill', this._settings.tweek.value.fill);
-            if (VGauge.isNonEmptyString(this._settings.tweek.value.fill)) {
-                this._svgElems.value.setAttribute('fill', this._settings.tweek.value.fill);
+            this._groupElems.value.setAttribute('x', this._settings.value.x);
+            this._groupElems.value.setAttribute('y', this._settings.value.y);
+
+            if (this._settings.value.fill !== '') {
+                this._groupElems.value.setAttribute('fill', VGauge.hexRgbForColor(this._settings.value.fill));
             } else {
-                this._svgElems.value.setAttribute('fill', 'currentColor');
+                this._groupElems.value.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
             }
-            this._svgElems.value.setAttribute('font-size', this._settings.tweek.value.fontSize);
+
+            this._groupElems.value.setAttribute('font-size', this._settings.value.fontSize);
 
             if (this._settings.cluster && this._settings.cluster.sectors
                 && VGauge.isNonEmptyArray(this._settings.cluster.sectors)) {
@@ -330,8 +301,8 @@ class VGauge {
                     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     label.innerHTML = value;
 
-                    textPoint.x = this._settings.tweek.ticks.radius * Math.cos(angle);
-                    textPoint.y = this._settings.tweek.ticks.radius * Math.sin(angle);
+                    textPoint.x = this._settings.ticks.radius * Math.cos(angle);
+                    textPoint.y = this._settings.ticks.radius * Math.sin(angle);
 
                     const tr1 = 'translate(' + textPoint.x + ',' + textPoint.y + ')';
                     const rot = 'rotate(' + (rotate * 180.0 / Math.PI) + ')';
@@ -340,7 +311,7 @@ class VGauge {
 
                     label.setAttribute('transform', transform);
 
-                    this._svgElems.ticks.append(label);
+                    this._groupElems.ticks.append(label);
                 }
 
                 if (this._settings.cluster.useTickLabels) {
@@ -350,7 +321,7 @@ class VGauge {
                     measureCtx.textAlign = 'center';
                     measureCtx.textBaseline = 'alphabetic';
 
-                    measureCtx.font = this._settings.tweek.ticks.fontSize + ' ' + this._fontFamily;
+                    measureCtx.font = this._settings.ticks.fontSize + ' ' + this._fontFamily;
                     this._tickLabelsMinusSignWidth = measureCtx.measureText('-').width;
                     this._tickLabelsHeight = measureCtx.measureText('0123456789').actualBoundingBoxAscent;
 
@@ -360,15 +331,15 @@ class VGauge {
                         this._targetValueLabelHeight = measureCtx.measureText('0123456789').actualBoundingBoxAscent;
                     }
 
-                    this._svgElems.ticks.setAttribute('text-anchor', 'middle');
-                    this._svgElems.ticks.setAttribute('dominant-baseline', 'alphabetic');
-                    this._svgElems.ticks.setAttribute('font-size', this._settings.tweek.ticks.fontSize);
-                    this._svgElems.ticks.setAttribute('font-family', this._fontFamily);
-                    this._svgElems.ticks.setAttribute('opacity', this._settings.tweek.ticks.opacity)
-                    if (VGauge.isNonEmptyString(this._settings.tweek.ticks.fill)) {
-                        this._svgElems.ticks.setAttribute('fill', this._settings.tweek.ticks.fill);
+                    this._groupElems.ticks.setAttribute('text-anchor', 'middle');
+                    this._groupElems.ticks.setAttribute('dominant-baseline', 'alphabetic');
+                    this._groupElems.ticks.setAttribute('font-size', this._settings.ticks.fontSize);
+                    this._groupElems.ticks.setAttribute('font-family', this._fontFamily);
+                    this._groupElems.ticks.setAttribute('opacity', this._settings.ticks.opacity)
+                    if (this._settings.ticks.fill !== '') {
+                        this._groupElems.ticks.setAttribute('fill', this._settings.ticks.fill);
                     } else {
-                        this._svgElems.ticks.setAttribute('fill', 'currentColor');
+                        this._groupElems.ticks.setAttribute('fill', 'currentColor');
                     }
                 }
 
@@ -395,12 +366,12 @@ class VGauge {
                         + (angle - prevAngle > Math.PI ? '1' : '0') + ' 0 ' + prevPoint2.x + ' ' + prevPoint2.y + ' '
                         + 'L ' + prevPoint1.x + ',' + prevPoint1.y + ' Z';
 
-                    const path = Array.from(this._svgElems.cluster.querySelectorAll('path'))[i];
+                    const path = Array.from(this._groupElems.cluster.querySelectorAll('path'))[i];
 
                     path.setAttribute('d', d);
                     path.setAttribute('opacity', sector.opacity);
 
-                    if (VGauge.isNonEmptyString(sector.fill)) {
+                    if (sector.fill !== '') {
                         path.setAttribute('fill', VGauge.hexRgbForColor(sector.fill));
                     }
                     else {
@@ -420,29 +391,29 @@ class VGauge {
             }
 
             if (this._settings.targetValue) {
-                if (VGauge.isNonEmptyString(this._settings.targetValue.indicator.path)) {
+                if (this._settings.targetValue.indicator.path !== '') {
                     const d = (new DOMParser).parseFromString(this._settings.targetValue.indicator.path, "image/svg+xml").querySelector('[d]').getAttribute('d');
-                    this._svgElems.targetValueIndicator.setAttribute('d', d);
+                    this._groupElems.targetValueIndicator.setAttribute('d', d);
                 }
 
-                if (VGauge.isNonEmptyString(this._settings.targetValue.indicator.fill)) {
-                    this._svgElems.targetValueIndicator.setAttribute('fill', this._settings.targetValue.indicator.fill);
+                if (this._settings.targetValue.indicator.fill !== '') {
+                    this._groupElems.targetValueIndicator.setAttribute('fill', this._settings.targetValue.indicator.fill);
                 } else {
-                    this._svgElems.targetValueIndicator.setAttribute('fill', 'currentColor');
+                    this._groupElems.targetValueIndicator.setAttribute('fill', 'currentColor');
                 }
 
-                if (VGauge.isNonEmptyString(this._settings.targetValue.label.fontSize)) {
-                    this._svgElems.targetValueLabel.setAttribute('font-size', this._settings.targetValue.label.fontSize);
+                if (this._settings.targetValue.label.fontSize !== '') {
+                    this._groupElems.targetValueLabel.setAttribute('font-size', this._settings.targetValue.label.fontSize);
                 }
 
-                if (VGauge.isNonEmptyString(this._settings.targetValue.label.fill)) {
-                    this._svgElems.targetValueLabel.setAttribute('fill', this._settings.targetValue.label.fill);
+                if (this._settings.targetValue.label.fill !== '') {
+                    this._groupElems.targetValueLabel.setAttribute('fill', this._settings.targetValue.label.fill);
                 } else {
-                    this._svgElems.targetValueLabel.setAttribute('fill', 'currentColor');
+                    this._groupElems.targetValueLabel.setAttribute('fill', 'currentColor');
                 }
 
-                this._svgElems.targetValueLabel.setAttribute('text-anchor', 'middle');
-                this._svgElems.targetValueLabel.setAttribute('dominant-baseline', 'alphabetic');
+                this._groupElems.targetValueLabel.setAttribute('text-anchor', 'middle');
+                this._groupElems.targetValueLabel.setAttribute('dominant-baseline', 'alphabetic');
             }
 
             if (this._settings.targetValue) {
@@ -478,7 +449,7 @@ class VGauge {
             y: this._settings.indicator.outerRadius * Math.sin(angle)
         };
 
-        this._svgElems.value.innerHTML = this._value.toFixed(this._settings.tweek.value.decimals);
+        this._groupElems.value.innerHTML = this._value.toFixed(this._settings.value.decimals);
 
         const d = 'M ' + prevPoint1.x + ',' + prevPoint1.y + ' '
             + 'A ' + this._settings.indicator.innerRadius + ' ' + this._settings.indicator.innerRadius + ' ' + (angle - prevAngle) * 180.0 / Math.PI + ' '
@@ -495,19 +466,28 @@ class VGauge {
                 sector = this._settings.cluster.sectors[0];
             }
 
-            if (VGauge.isNonEmptyString(sector.fill)) {
-                this._svgElems.valueSector.setAttribute('fill', VGauge.hexRgbForColor(sector.fill));
+            if (this._settings.indicator.fill !== '') {
+                this._groupElems.indicator.setAttribute('fill', VGauge.hexRgbForColor(this._settings.indicator.fill));
+            } else if (sector.useAsIndicatorColor && sector.fill !== '') {
+                this._groupElems.indicator.setAttribute('fill', VGauge.hexRgbForColor(sector.fill));
             } else {
-                this._svgElems.valueSector.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
+                this._groupElems.indicator.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
             }
 
+            if (this._settings.value.fill !== '') {
+                this._groupElems.value.setAttribute('fill', VGauge.hexRgbForColor(this._settings.value.fill));
+            } else if (sector.useAsValueColor && sector.fill !== '') {
+                this._groupElems.value.setAttribute('fill', VGauge.hexRgbForColor(sector.fill));
+            } else {
+                this._groupElems.value.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
+            }
         }
         else {
-            this._svgElems.valueSector.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
-            this._svgElems.valueSector.setAttribute('opacity', 1);
+            this._groupElems.indicator.setAttribute('fill', VGauge.hexRgbForColor(this._currentColor));
+            this._groupElems.indicator.setAttribute('opacity', 1);
         }
 
-        this._svgElems.valueSector.setAttribute('d', d);
+        this._groupElems.indicator.setAttribute('d', d);
 
         if (this._settings.targetValue) {
             const tipPoint = { x: 0, y: 0 };
@@ -518,7 +498,7 @@ class VGauge {
             tipPoint.y = this._settings.targetValue.indicator.radius * Math.sin(angle);
             let rotate = angle * 180.0 / Math.PI - 90;
             let transform = 'translate(' + tipPoint.x + ',' + tipPoint.y + ') rotate(' + rotate + ')';
-            this._svgElems.targetValueIndicator.setAttribute('transform', transform);
+            this._groupElems.targetValueIndicator.setAttribute('transform', transform);
             const rotateLabel = angle < Math.PI ? angle + 1.5 * Math.PI : angle + 0.5 * Math.PI;
 
             const labelPoint = { x: 0, y: 0 };
@@ -532,8 +512,8 @@ class VGauge {
             const tr2 = 'translate(' + (this._targetValue < 0 ? -this._targetValueLabelMinusSignWidth / 2.0 : 0) + ',' + (this._targetValueLabelHeight / 2.0) + ')';
             transform = tr1 + ' ' + rot + ' ' + tr2;
 
-            this._svgElems.targetValueLabel.innerHTML = this._targetValue;
-            this._svgElems.targetValueLabel.setAttribute('transform', transform);
+            this._groupElems.targetValueLabel.innerHTML = this._targetValue;
+            this._groupElems.targetValueLabel.setAttribute('transform', transform);
         }
     }
 
@@ -542,13 +522,8 @@ class VGauge {
             return;
         }
 
-        this._currentColor = this._containerStyles.color;
-        this._width = this._container.clientWidth;
-        this._height = this._container.clientHeight;
-
-        if (this._width > 0 && this._height > 0) {
-            this._update();
-        }
+        this._currentColor = this._groupStyles.color;
+        this._update();
     }
 
     get min() {
@@ -614,7 +589,7 @@ class VGauge {
 
 
     get gridOpacity() {
-        const grid = this._svgElems.helperGrid;
+        const grid = this._groupElems.helperGrid;
         if (grid) {
             return parseFloat(grid.getAttribute('opacity'));
         }
@@ -622,14 +597,14 @@ class VGauge {
     }
 
     set gridOpacity(o) {
-        const grid = this._svgElems.helperGrid;
+        const grid = this._groupElems.helperGrid;
         if (grid) {
             grid.setAttribute('opacity', o);
         }
     }
 
     setIconOpacity(id, opacity) {
-        const icon = this._container.querySelector('[rid="' + id + '"]');
+        const icon = this._group.querySelector('[rid="' + id + '"]');
         if (icon) {
             icon.setAttribute('opacity', opacity);
         }
