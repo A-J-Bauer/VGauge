@@ -125,20 +125,32 @@ Gauge with a custom color value indicator, a name, a unit and a value label.
     "max": 50,
     "startAngle": 90,
     "sweepAngle": 260,
+    "useHelperGrid": true,
     "fontFamily": "",
     "backgroundColor": "",
     "cluster": {
         "innerRadius": 30,
         "outerRadius": 40,
+        "useTickLabels": false,
         "sectors": [
             {
                 "fill": "#ffc107",
                 "opacity": 0.02,
-                "sweepTo": 50
+                "sweepTo": 50,
+                "useAsValueColor": false,
+                "useAsIndicatorColor": true
             }
         ]
     },
+    "value": {
+        "x": 40,
+        "y": 20,
+        "fill": "",
+        "fontSize": "1rem",
+        "decimals": 1
+    },
     "indicator": {
+        "fill": "",
         "innerRadius": 32,
         "outerRadius": 40
     },
@@ -155,13 +167,6 @@ Gauge with a custom color value indicator, a name, a unit and a value label.
         "y": 39,
         "fill": "",
         "fontSize": "11px"
-    },
-    "value": {
-        "x": 40,
-        "y": 20,
-        "fill": "",
-        "fontSize": "1rem",
-        "decimals": 1
     }
 }
 ```
@@ -196,38 +201,60 @@ This is the intended style for the gauge, giving the user visual feedback (at a 
 <summary>settings JSON</summary>
 
 ```javascript
-   {
+{
     "min": -20,
     "max": 50,
     "startAngle": 90,
-    "sweepAngle": 260,
+    "sweepAngle": 260,    
     "fontFamily": "",
     "backgroundColor": "",
     "cluster": {
         "innerRadius": 30,
         "outerRadius": 40,
+        "useTickLabels": true,
         "sectors": [
+            {
+                "fill": "#ffc107",
+                "opacity": 0.1,
+                "sweepTo": -5,
+                "useAsValueColor": false,
+                "useAsIndicatorColor": true
+            },
             {
                 "fill": "#0d6efd",
                 "opacity": 0.1,
-                "sweepTo": 20
+                "sweepTo": 15,
+                "useAsValueColor": false,
+                "useAsIndicatorColor": true
             },
             {
                 "fill": "#198754",
                 "opacity": 0.1,
-                "sweepTo": 30
+                "sweepTo": 30,
+                "useAsValueColor": false,
+                "useAsIndicatorColor": true
             },
             {
                 "fill": "#dc3545",
                 "opacity": 0.1,
-                "sweepTo": 50
+                "sweepTo": 50,
+                "useAsValueColor": true,
+                "useAsIndicatorColor": true
             }
         ]
     },
+    "value": {
+        "x": 40,
+        "y": 20,
+        "fill": "",
+        "fontSize": "1rem",
+        "decimals": 1
+    },
     "indicator": {
+        "fill": "",
         "innerRadius": 32,
         "outerRadius": 40
-    },
+    },    
     "name": {
         "text": "Room 1",
         "x": 0,
@@ -242,12 +269,11 @@ This is the intended style for the gauge, giving the user visual feedback (at a 
         "fill": "",
         "fontSize": "11px"
     },
-    "value": {
-        "x": 40,
-        "y": 20,
-        "fill": "",
-        "fontSize": "1rem",
-        "decimals": 1
+    "ticks": {
+        "radius": 44,
+        "fontSize": "8px",
+        "fill": "#7f7f7f",
+        "opacity": 0.1
     }
 }
 ```
