@@ -41,12 +41,9 @@ const gauge = new VGauge('groupId', settings);
 gauge.value = 34.6;
 ```
 
-
-
-## Basic
+## examples
 
 Simple gauge with a value indicator, a name, a unit and a value label.
-
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/basic_dark.svg">
@@ -105,8 +102,6 @@ Simple gauge with a value indicator, a name, a unit and a value label.
 <a id="custom-indicator-color"></a> [Back to top](#top)
 
 &nbsp;
-
-## Custom Indicator Color
 
 Gauge with a custom color value indicator, a name, a unit and a value label.
 
@@ -184,9 +179,7 @@ Gauge with a custom color value indicator, a name, a unit and a value label.
 
 &nbsp;
 
-### Multicolor
-
-This is the intended style for the gauge, giving the user visual feedback (at a glance) of the current state by using defined colors like: blue for 'too cold', green for 'all good', red for 'too hot'.
+This gauge gives the user quick visual feedback by using colors like: blue for 'too cold', green for 'all good', red for 'too hot'.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/multi_dark.svg">
@@ -287,7 +280,7 @@ This is the intended style for the gauge, giving the user visual feedback (at a 
 &nbsp;
 
 
-## Miscellaneous
+## miscellaneous
 
 ### cdn
 
