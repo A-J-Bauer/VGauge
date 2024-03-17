@@ -99,7 +99,9 @@
                     - for bootstrap add form-control, mb-2 and mt-2 to class
                     -->
                     <div id="gaugeContainer">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+                            <g id="groupId"></g>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -371,6 +373,7 @@
                 box.classList.add('box');
                 const gaugeContainer = gaugeContainerClone.cloneNode(true);
                 gaugeContainer.setAttribute('id', 'gaugeContainer' + i);
+                gaugeContainer.querySelector('g').setAttribute('id', 'groupId' + i);
                 gaugeContainer.classList.add('gaugeContainer');
                 box.append(gaugeContainer);
                 demo.append(box);
@@ -379,7 +382,7 @@
                     gaugeContainer.style.display = 'none';
                 }
 
-                gauges[i] = new VGauge('gaugeContainer' + i, settings);
+                gauges[i] = new VGauge('groupId' + i, settings);
                 gaugeContainers[i] = gaugeContainer;
             }
 
