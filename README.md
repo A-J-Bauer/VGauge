@@ -23,7 +23,7 @@ _"zero dependencies and scales nicely on touch devices"_
 
 ## usage
 
-```
+```html
 <div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
         <g id="groupId"></g>
